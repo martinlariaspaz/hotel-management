@@ -3,19 +3,20 @@ import {
   ForbiddenException,
   Injectable,
   NotFoundException,
+  Optional,
 } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { Model, Types, isValidObjectId } from "mongoose";
 import { RoomStatus, UserRole } from "../../common/enums";
 import {
+  REALTIME_EVENT_NAMES,
+  RealtimeGateway,
+} from "../../realtime/realtime.gateway";
+import {
   RoomType,
   RoomTypeDocument,
 } from "../../room-types/schemas/room-type.schema";
-import {
-  CreateRoomDto,
-  ListRoomsQueryDto,
-  UpdateRoomDto,
-} from "../dto";
+import { CreateRoomDto, ListRoomsQueryDto, UpdateRoomDto } from "../dto";
 import { Room, RoomDocument } from "../schemas";
 import type { StaffRoom } from "../types";
 
@@ -56,6 +57,8 @@ export class RoomsService {
     private readonly roomModel: Model<RoomDocument>,
     @InjectModel(RoomType.name)
     private readonly roomTypeModel: Model<RoomTypeDocument>,
+    @Optional()
+    private readonly realtimeGateway?: RealtimeGateway,
   ) {}
 
   async listRooms(query: ListRoomsQueryDto = {}): Promise<StaffRoom[]> {
@@ -101,7 +104,11 @@ export class RoomsService {
         status: dto.status ?? RoomStatus.Available,
       });
 
-      return this.getRoom(room._id.toString());
+      const staffRoom = await this.getRoom(room._id.toString());
+
+      this.emitRoomChanged("created", staffRoom.id);
+
+      return staffRoom;
     } catch (error) {
       if (isMongoDuplicateKeyError(error)) {
         throw new BadRequestException("Room number already exists");
@@ -151,7 +158,11 @@ export class RoomsService {
         throw new NotFoundException("Room not found");
       }
 
-      return this.toStaffRoom(room);
+      const staffRoom = this.toStaffRoom(room);
+
+      this.emitRoomChanged("updated", staffRoom.id);
+
+      return staffRoom;
     } catch (error) {
       if (isMongoDuplicateKeyError(error)) {
         throw new BadRequestException("Room number already exists");
@@ -190,7 +201,11 @@ export class RoomsService {
       throw new NotFoundException("Room not found");
     }
 
-    return this.toStaffRoom(room);
+    const staffRoom = this.toStaffRoom(room);
+
+    this.emitRoomChanged("updated", staffRoom.id);
+
+    return staffRoom;
   }
 
   private async findRoomById(roomId: string): Promise<PopulatedRoomDocument> {
@@ -242,7 +257,14 @@ export class RoomsService {
       },
     };
   }
+
+  private emitRoomChanged(action: "created" | "updated", roomId: string): void {
+    this.realtimeGateway?.emitMutationEvent(REALTIME_EVENT_NAMES.RoomsChanged, {
+      action,
+      entity: "room",
+      id: roomId,
+    });
+  }
 }
 
 export default RoomsService;
-

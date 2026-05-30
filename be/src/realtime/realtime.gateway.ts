@@ -14,6 +14,24 @@ import { Server, Socket } from "socket.io";
 import { RoomMessageDto } from "./dto/room-message.dto";
 import { RoomDto } from "./dto/room.dto";
 
+export const REALTIME_EVENT_NAMES = {
+  RoomsChanged: "rooms:changed",
+  RoomTypesChanged: "room-types:changed",
+  StaffUsersChanged: "staff-users:changed",
+} as const;
+
+export type RealtimeEventName =
+  (typeof REALTIME_EVENT_NAMES)[keyof typeof REALTIME_EVENT_NAMES];
+
+export type RealtimeMutationAction = "created" | "deactivated" | "updated";
+
+export type RealtimeMutationPayload = {
+  action: RealtimeMutationAction;
+  entity: "room" | "room-type" | "staff-user";
+  id: string;
+  timestamp: string;
+};
+
 const corsOrigin = process.env.CORS_ORIGIN
   ? process.env.CORS_ORIGIN.split(",")
       .map((origin) => origin.trim())
@@ -31,7 +49,7 @@ export class RealtimeGateway
   implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect
 {
   @WebSocketServer()
-  private server: Server;
+  private server?: Server;
 
   private readonly logger = new Logger(RealtimeGateway.name);
 
@@ -92,6 +110,15 @@ export class RealtimeGateway
     @ConnectedSocket() client: Socket,
     @MessageBody() payload: RoomMessageDto,
   ): WsResponse<{ delivered: boolean }> {
+    if (!this.server) {
+      return {
+        event: "room:message:ack",
+        data: {
+          delivered: false,
+        },
+      };
+    }
+
     this.server.to(payload.room).emit("room:message", {
       room: payload.room,
       clientId: client.id,
@@ -109,6 +136,21 @@ export class RealtimeGateway
   }
 
   emitToAll<TPayload>(event: string, payload: TPayload): void {
+    if (!this.server) {
+      this.logger.warn(`Socket event skipped before gateway init: ${event}`);
+      return;
+    }
+
     this.server.emit(event, payload);
+  }
+
+  emitMutationEvent(
+    event: RealtimeEventName,
+    payload: Omit<RealtimeMutationPayload, "timestamp">,
+  ): void {
+    this.emitToAll<RealtimeMutationPayload>(event, {
+      ...payload,
+      timestamp: new Date().toISOString(),
+    });
   }
 }

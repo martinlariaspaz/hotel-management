@@ -4,6 +4,7 @@ import { MongooseModule } from "@nestjs/mongoose";
 import { AuthController } from "./auth.controller";
 import { JwtAuthGuard } from "./guards/jwt-auth.guard";
 import { RolesGuard } from "./guards/roles.guard";
+import { RealtimeModule } from "../realtime/realtime.module";
 import {
   BlacklistedToken,
   BlacklistedTokenSchema,
@@ -17,6 +18,7 @@ import { StaffUsersController } from "./staff-users.controller";
 @Module({
   imports: [
     JwtModule.register({}),
+    RealtimeModule,
     MongooseModule.forFeature([
       {
         name: BlacklistedToken.name,

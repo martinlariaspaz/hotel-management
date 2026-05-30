@@ -2,10 +2,15 @@ import {
   BadRequestException,
   Injectable,
   NotFoundException,
+  Optional,
 } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { randomBytes, scryptSync } from "node:crypto";
 import { Model, isValidObjectId } from "mongoose";
+import {
+  REALTIME_EVENT_NAMES,
+  RealtimeGateway,
+} from "../../realtime/realtime.gateway";
 import { CreateStaffUserDto } from "../dto/create-staff-user.dto";
 import { UpdateStaffUserDto } from "../dto/update-staff-user.dto";
 import { User, UserDocument } from "../schemas/user.schema";
@@ -31,6 +36,8 @@ export class StaffUsersService {
   constructor(
     @InjectModel(User.name)
     private readonly userModel: Model<UserDocument>,
+    @Optional()
+    private readonly realtimeGateway?: RealtimeGateway,
   ) {}
 
   async listStaffUsers(): Promise<StaffUser[]> {
@@ -52,7 +59,11 @@ export class StaffUsersService {
         passwordSalt,
       });
 
-      return this.toStaffUser(user);
+      const staffUser = this.toStaffUser(user);
+
+      this.emitStaffUserChanged("created", staffUser.id);
+
+      return staffUser;
     } catch (error) {
       if (isMongoDuplicateKeyError(error)) {
         throw new BadRequestException("Username already exists");
@@ -98,7 +109,11 @@ export class StaffUsersService {
       throw new NotFoundException("Staff user not found");
     }
 
-    return this.toStaffUser(user);
+    const staffUser = this.toStaffUser(user);
+
+    this.emitStaffUserChanged("updated", staffUser.id);
+
+    return staffUser;
   }
 
   private hashPassword(password: string): {
@@ -121,6 +136,20 @@ export class StaffUsersService {
       role: user.role,
       isActive: user.isActive,
     };
+  }
+
+  private emitStaffUserChanged(
+    action: "created" | "updated",
+    staffUserId: string,
+  ): void {
+    this.realtimeGateway?.emitMutationEvent(
+      REALTIME_EVENT_NAMES.StaffUsersChanged,
+      {
+        action,
+        entity: "staff-user",
+        id: staffUserId,
+      },
+    );
   }
 }
 

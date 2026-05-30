@@ -2,9 +2,14 @@ import {
   BadRequestException,
   Injectable,
   NotFoundException,
+  Optional,
 } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { Model, isValidObjectId } from "mongoose";
+import {
+  REALTIME_EVENT_NAMES,
+  RealtimeGateway,
+} from "../../realtime/realtime.gateway";
 import { CreateRoomTypeDto, UpdateRoomTypeDto } from "../dto";
 import { RoomType, RoomTypeDocument } from "../schemas/room-type.schema";
 import type { AdminRoomType, PublicRoomType } from "../types";
@@ -29,6 +34,8 @@ export class RoomTypesService {
   constructor(
     @InjectModel(RoomType.name)
     private readonly roomTypeModel: Model<RoomTypeDocument>,
+    @Optional()
+    private readonly realtimeGateway?: RealtimeGateway,
   ) {}
 
   async listPublicRoomTypes(): Promise<PublicRoomType[]> {
@@ -74,7 +81,11 @@ export class RoomTypesService {
         isActive: dto.isActive ?? true,
       });
 
-      return this.toAdminRoomType(roomType);
+      const adminRoomType = this.toAdminRoomType(roomType);
+
+      this.emitRoomTypeChanged("created", adminRoomType.id);
+
+      return adminRoomType;
     } catch (error) {
       if (isMongoDuplicateKeyError(error)) {
         throw new BadRequestException("Room type name already exists");
@@ -133,7 +144,11 @@ export class RoomTypesService {
         throw new NotFoundException("Room type not found");
       }
 
-      return this.toAdminRoomType(roomType);
+      const adminRoomType = this.toAdminRoomType(roomType);
+
+      this.emitRoomTypeChanged("updated", adminRoomType.id);
+
+      return adminRoomType;
     } catch (error) {
       if (isMongoDuplicateKeyError(error)) {
         throw new BadRequestException("Room type name already exists");
@@ -158,7 +173,11 @@ export class RoomTypesService {
       throw new NotFoundException("Room type not found");
     }
 
-    return this.toAdminRoomType(roomType);
+    const adminRoomType = this.toAdminRoomType(roomType);
+
+    this.emitRoomTypeChanged("deactivated", adminRoomType.id);
+
+    return adminRoomType;
   }
 
   private async findRoomTypeById(
@@ -201,7 +220,20 @@ export class RoomTypesService {
       isActive: roomType.isActive,
     };
   }
+
+  private emitRoomTypeChanged(
+    action: "created" | "deactivated" | "updated",
+    roomTypeId: string,
+  ): void {
+    this.realtimeGateway?.emitMutationEvent(
+      REALTIME_EVENT_NAMES.RoomTypesChanged,
+      {
+        action,
+        entity: "room-type",
+        id: roomTypeId,
+      },
+    );
+  }
 }
 
 export default RoomTypesService;
-
