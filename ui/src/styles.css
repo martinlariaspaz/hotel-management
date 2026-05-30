@@ -1,0 +1,190 @@
+:root {
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  min-height: 100%;
+}
+
+body {
+  min-width: 320px;
+  margin: 0;
+  color: var(--mantine-color-text);
+  background: var(--mantine-color-body);
+}
+
+button {
+  font: inherit;
+}
+
+.app-toolbar {
+  position: fixed;
+  top: var(--mantine-spacing-md);
+  right: var(--mantine-spacing-md);
+  z-index: 200;
+}
+
+.login-page {
+  min-height: 100vh;
+  padding: var(--mantine-spacing-md);
+  background:
+    radial-gradient(
+      circle at top left,
+      var(--mantine-color-teal-0),
+      transparent 34rem
+    ),
+    linear-gradient(
+      135deg,
+      var(--mantine-color-gray-0),
+      var(--mantine-color-blue-0)
+    );
+}
+
+.login-panel {
+  width: min(100%, 440px);
+}
+
+.login-title,
+.dashboard-title {
+  line-height: 1.05;
+}
+
+.dashboard-page {
+  min-height: 100vh;
+  padding: var(--mantine-spacing-xl) 0;
+  background:
+    linear-gradient(
+      180deg,
+      var(--mantine-color-gray-0),
+      var(--mantine-color-body) 20rem
+    );
+}
+
+.dashboard-container {
+  width: 100%;
+}
+
+.dashboard-header {
+  padding-right: 3.75rem;
+}
+
+.dashboard-actions {
+  align-items: center;
+}
+
+.dashboard-content-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(18rem, 24rem);
+  gap: var(--mantine-spacing-xl);
+  align-items: start;
+}
+
+.dashboard-section {
+  min-width: 0;
+}
+
+.stat-card {
+  min-height: 9.25rem;
+  background: light-dark(var(--mantine-color-white), var(--mantine-color-dark-6));
+}
+
+.stat-value {
+  font-size: 2rem;
+  line-height: 1;
+}
+
+.api-card {
+  background: light-dark(var(--mantine-color-white), var(--mantine-color-dark-6));
+}
+
+.api-status {
+  min-height: 5rem;
+  padding: var(--mantine-spacing-md);
+  border: 1px solid var(--mantine-color-default-border);
+  border-radius: var(--mantine-radius-md);
+  background: light-dark(var(--mantine-color-gray-0), var(--mantine-color-dark-7));
+}
+
+[data-mantine-color-scheme='dark'] .login-page {
+  background:
+    radial-gradient(
+      circle at top left,
+      rgba(12, 166, 120, 0.28),
+      transparent 34rem
+    ),
+    linear-gradient(
+      135deg,
+      var(--mantine-color-dark-9),
+      var(--mantine-color-dark-8)
+    );
+}
+
+[data-mantine-color-scheme='dark'] .dashboard-page {
+  background:
+    linear-gradient(
+      180deg,
+      var(--mantine-color-dark-8),
+      var(--mantine-color-dark-9) 22rem
+    );
+}
+
+@media (max-width: 62em) {
+  .dashboard-content-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 48em) {
+  .dashboard-page {
+    padding: var(--mantine-spacing-md) 0;
+  }
+
+  .dashboard-header {
+    padding-right: 3.25rem;
+  }
+
+  .dashboard-actions {
+    width: 100%;
+    justify-content: flex-start;
+  }
+}
+
+@media (max-width: 36em) {
+  .app-toolbar {
+    top: var(--mantine-spacing-sm);
+    right: var(--mantine-spacing-sm);
+  }
+
+  .login-page {
+    align-items: stretch;
+    padding: var(--mantine-spacing-sm);
+  }
+
+  .login-panel {
+    align-self: center;
+  }
+
+  .dashboard-header {
+    padding-right: 0;
+    padding-top: 3rem;
+  }
+
+  .dashboard-actions {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .dashboard-actions .mantine-Button-root,
+  .dashboard-actions .mantine-Badge-root {
+    width: 100%;
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "name": "hotel-management",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "concurrently -n backend,ui -c cyan,magenta \"npm run dev:be\" \"npm run dev:ui\"",
+    "dev:be": "npm --prefix be run start:dev",
+    "dev:ui": "node scripts/run-ui-dev.mjs"
+  },
+  "devDependencies": {
+    "concurrently": "^10.0.0"
+  }
+}
