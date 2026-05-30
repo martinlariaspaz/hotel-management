@@ -15,6 +15,11 @@ import {
   type HealthRepository,
 } from '../features/health/repositories';
 import {
+  createHttpMaintenanceBlockRepository,
+  createMockMaintenanceBlockRepository,
+  type MaintenanceBlockRepository,
+} from '../features/maintenance-blocks/repositories';
+import {
   createHttpRoomTypeRepository,
   createMockRoomTypeRepository,
   type RoomTypeRepository,
@@ -33,6 +38,7 @@ import {
 export type Repositories = {
   authRepository: AuthRepository;
   healthRepository: HealthRepository;
+  maintenanceBlockRepository: MaintenanceBlockRepository;
   roomRepository: RoomRepository;
   roomTypeRepository: RoomTypeRepository;
   staffRepository: StaffRepository;
@@ -79,6 +85,7 @@ function createBaseRepositories(
     return {
       authRepository: createMockAuthRepository(),
       healthRepository: createMockHealthRepository(),
+      maintenanceBlockRepository: createMockMaintenanceBlockRepository(),
       roomRepository: createMockRoomRepository(),
       roomTypeRepository: createMockRoomTypeRepository(),
       staffRepository: createMockStaffRepository(),
@@ -88,6 +95,7 @@ function createBaseRepositories(
   return {
     authRepository: createHttpAuthRepository(API_URL),
     healthRepository: createHttpHealthRepository(API_URL),
+    maintenanceBlockRepository: createHttpMaintenanceBlockRepository(API_URL),
     roomRepository: createHttpRoomRepository(API_URL),
     roomTypeRepository: createHttpRoomTypeRepository(API_URL),
     staffRepository: createHttpStaffRepository(API_URL),

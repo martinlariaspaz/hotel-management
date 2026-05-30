@@ -332,6 +332,74 @@ const enTranslations = {
       noRoomsForStatus: 'No rooms in this status.',
       roomCount: '{count} rooms',
     },
+    maintenance: {
+      eyebrow: 'Maintenance',
+      title: 'Room blocks',
+      createFromBoard: 'Block room {roomNumber}',
+      status: {
+        active: 'Active',
+        cancelled: 'Cancelled',
+      },
+      filters: {
+        startDate: {
+          label: 'Start date',
+          placeholder: 'YYYY-MM-DD',
+        },
+        endDate: {
+          label: 'End date',
+          placeholder: 'YYYY-MM-DD',
+        },
+        invalidRange: 'Choose an end date after the start date.',
+      },
+      list: {
+        loading: 'Loading maintenance blocks',
+        empty: 'No active maintenance blocks in this range.',
+        dateRange: '{startDate} to {endDate}',
+        columns: {
+          actions: 'Actions',
+          dates: 'Dates',
+          reason: 'Reason',
+          room: 'Room',
+          status: 'Status',
+        },
+      },
+      form: {
+        createTitle: 'Create maintenance block',
+        createSubmit: 'Create block',
+        fields: {
+          room: {
+            label: 'Room',
+            placeholder: 'Select a room',
+            required: 'Room is required',
+          },
+          startDate: {
+            label: 'Start date',
+            placeholder: 'YYYY-MM-DD',
+            required: 'Start date is required',
+            date: 'Enter a valid start date',
+          },
+          endDate: {
+            label: 'End date',
+            placeholder: 'YYYY-MM-DD',
+            required: 'End date is required',
+            date: 'Enter a valid end date',
+            afterStart: 'End date must be after the start date',
+          },
+          reason: {
+            label: 'Reason',
+            placeholder: 'Enter a maintenance reason',
+            required: 'Reason is required',
+          },
+        },
+      },
+      cancel: {
+        action: 'Cancel block',
+        title: 'Cancel maintenance block',
+        description:
+          'Cancel the maintenance block for room {roomNumber} from {startDate} to {endDate}?',
+        confirm: 'Cancel block',
+      },
+    },
     form: {
       createTitle: 'Create room',
       updateTitle: 'Update room',

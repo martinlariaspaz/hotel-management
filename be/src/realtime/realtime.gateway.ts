@@ -15,6 +15,7 @@ import { RoomMessageDto } from "./dto/room-message.dto";
 import { RoomDto } from "./dto/room.dto";
 
 export const REALTIME_EVENT_NAMES = {
+  MaintenanceBlocksChanged: "maintenance-blocks:changed",
   RoomsChanged: "rooms:changed",
   RoomTypesChanged: "room-types:changed",
   StaffUsersChanged: "staff-users:changed",
@@ -23,11 +24,15 @@ export const REALTIME_EVENT_NAMES = {
 export type RealtimeEventName =
   (typeof REALTIME_EVENT_NAMES)[keyof typeof REALTIME_EVENT_NAMES];
 
-export type RealtimeMutationAction = "created" | "deactivated" | "updated";
+export type RealtimeMutationAction =
+  | "cancelled"
+  | "created"
+  | "deactivated"
+  | "updated";
 
 export type RealtimeMutationPayload = {
   action: RealtimeMutationAction;
-  entity: "room" | "room-type" | "staff-user";
+  entity: "maintenance-block" | "room" | "room-type" | "staff-user";
   id: string;
   timestamp: string;
 };
