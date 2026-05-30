@@ -3,6 +3,9 @@ import type { TranslationMessages } from "./en";
 const esARTranslations = {
   common: {
     actions: {
+      cancel: "Cancelar",
+      edit: "Editar",
+      save: "Guardar",
       refresh: "Actualizar",
       signIn: "Ingresar",
       logout: "Cerrar sesión",
@@ -72,6 +75,12 @@ const esARTranslations = {
     sessionChecking: {
       eyebrow: "Hotel Management",
       title: "Validando sesión",
+    },
+    accessDenied: {
+      action: "Ir al panel",
+      description: "Tu rol de personal no permite acceder a esta secciÃ³n.",
+      eyebrow: "Control de acceso",
+      title: "Acceso denegado",
     },
   },
   appShell: {
@@ -155,6 +164,59 @@ const esARTranslations = {
       lastCheckedFallback: "Sin comprobaciones previas",
       refresh: "Actualizar",
       error: "Falló la comprobación de salud",
+    },
+  },
+  staffSettingsPage: {
+    header: {
+      ariaLabel: "Configuraci\u00f3n del personal",
+      eyebrow: "Administraci\u00f3n",
+      title: "Acceso del personal",
+    },
+    management: {
+      eyebrow: "Roles y permisos",
+      title: "Usuarios del personal",
+      createAction: "Crear usuario",
+    },
+    list: {
+      loading: "Cargando usuarios",
+      empty: "Todav\u00eda no hay usuarios del personal.",
+      columns: {
+        actions: "Acciones",
+        role: "Rol",
+        status: "Estado",
+        username: "Usuario",
+      },
+      status: {
+        active: "Activo",
+        inactive: "Inactivo",
+      },
+    },
+    form: {
+      createTitle: "Crear usuario del personal",
+      updateTitle: "Actualizar usuario del personal",
+      createSubmit: "Crear usuario",
+      updateSubmit: "Guardar cambios",
+      fields: {
+        username: {
+          label: "Usuario",
+          placeholder: "Ingrese un usuario",
+          required: "El usuario es obligatorio",
+        },
+        password: {
+          label: "Contrase\u00f1a",
+          placeholder: "Ingrese una contrase\u00f1a",
+          required: "La contrase\u00f1a es obligatoria",
+          minLength: "La contrase\u00f1a debe tener al menos 8 caracteres",
+        },
+        role: {
+          label: "Rol",
+          placeholder: "Seleccione un rol",
+          required: "El rol es obligatorio",
+        },
+        isActive: {
+          label: "Usuario activo",
+        },
+      },
     },
   },
 } as const satisfies TranslationMessages;

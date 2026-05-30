@@ -1,7 +1,10 @@
 const enTranslations = {
   common: {
     actions: {
+      cancel: 'Cancel',
+      edit: 'Edit',
       refresh: 'Refresh',
+      save: 'Save',
       signIn: 'Sign in',
       logout: 'Logout',
     },
@@ -69,6 +72,12 @@ const enTranslations = {
     sessionChecking: {
       eyebrow: 'Hotel Management',
       title: 'Validating session',
+    },
+    accessDenied: {
+      action: 'Go to dashboard',
+      description: 'Your staff role does not allow access to this area.',
+      eyebrow: 'Access control',
+      title: 'Access denied',
     },
   },
   appShell: {
@@ -151,6 +160,59 @@ const enTranslations = {
       lastCheckedFallback: 'No previous checks',
       refresh: 'Refresh',
       error: 'Health check failed',
+    },
+  },
+  staffSettingsPage: {
+    header: {
+      ariaLabel: 'Staff settings',
+      eyebrow: 'Admin',
+      title: 'Staff access',
+    },
+    management: {
+      eyebrow: 'Roles and permissions',
+      title: 'Staff users',
+      createAction: 'Create staff user',
+    },
+    list: {
+      loading: 'Loading staff users',
+      empty: 'No staff users yet.',
+      columns: {
+        actions: 'Actions',
+        role: 'Role',
+        status: 'Status',
+        username: 'Username',
+      },
+      status: {
+        active: 'Active',
+        inactive: 'Inactive',
+      },
+    },
+    form: {
+      createTitle: 'Create staff user',
+      updateTitle: 'Update staff user',
+      createSubmit: 'Create user',
+      updateSubmit: 'Save changes',
+      fields: {
+        username: {
+          label: 'Username',
+          placeholder: 'Enter a username',
+          required: 'Username is required',
+        },
+        password: {
+          label: 'Password',
+          placeholder: 'Enter a password',
+          required: 'Password is required',
+          minLength: 'Password must have at least 8 characters',
+        },
+        role: {
+          label: 'Role',
+          placeholder: 'Select a role',
+          required: 'Role is required',
+        },
+        isActive: {
+          label: 'Active user',
+        },
+      },
     },
   },
 } as const;

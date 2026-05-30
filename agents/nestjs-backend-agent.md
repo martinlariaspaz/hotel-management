@@ -120,6 +120,7 @@ src/
 └─ realtime/
 ```
 
-```
+## Persistent Feature Notes
 
-```
+- Use specific hotel-business conflict codes in future backend features instead of only a generic conflict code. Examples: `ROOM_NOT_AVAILABLE`, `CHECK_IN_ROOM_NOT_READY`, `PAYMENT_HISTORY_DELETE_BLOCKED`.
+- When status contracts evolve, add or update tests that guard parity between backend enums and UI reservation, room, payment, and role values.

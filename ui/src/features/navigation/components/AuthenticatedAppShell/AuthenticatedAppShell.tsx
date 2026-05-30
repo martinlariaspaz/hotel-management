@@ -105,7 +105,6 @@ const navigationItems: readonly AppNavigationItem[] = [
     roles: ['admin', 'management'],
   },
   {
-    disabled: true,
     icon: Settings,
     id: 'settings',
     labelKey: 'appShell.navigation.settings',

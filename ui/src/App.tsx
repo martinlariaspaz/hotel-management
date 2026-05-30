@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, type ReactNode } from 'react';
 import {
   ActionIcon,
   Center,
@@ -17,9 +17,9 @@ import {
 import { Hotel, Moon, Sun } from 'lucide-react';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { AuthenticatedAppShell } from './features/navigation';
-import { useAuth } from './features/auth';
+import { RoleProtectedRoute, useAuth, type UserRole } from './features/auth';
 import { isSupportedLocale, useI18n } from './i18n';
-import { DashboardPage, LoginPage } from './pages';
+import { DashboardPage, LoginPage, StaffSettingsPage } from './pages';
 import { getRepositoryApiErrorTranslationKey } from './repositories';
 
 function ColorSchemeToggle() {
@@ -137,6 +137,32 @@ function App() {
     document.title = t('app.title');
   }, [t]);
 
+  function renderAuthenticatedRoute(
+    children: ReactNode,
+    allowedRoles?: readonly UserRole[],
+  ) {
+    if (!isAuthenticated || !user) {
+      return <Navigate replace to="/login" />;
+    }
+
+    return (
+      <AuthenticatedAppShell
+        isLoggingOut={isLoggingOut}
+        onLogout={() => void logout()}
+        utilityControls={<AppToolbarControls />}
+        user={user}
+      >
+        {allowedRoles ? (
+          <RoleProtectedRoute allowedRoles={allowedRoles} userRole={user.role}>
+            {children}
+          </RoleProtectedRoute>
+        ) : (
+          children
+        )}
+      </AuthenticatedAppShell>
+    );
+  }
+
   if (authStatus === 'checking') {
     return (
       <>
@@ -167,21 +193,12 @@ function App() {
           path="/login"
         />
         <Route
-          element={
-            isAuthenticated && user ? (
-              <AuthenticatedAppShell
-                isLoggingOut={isLoggingOut}
-                onLogout={() => void logout()}
-                utilityControls={<AppToolbarControls />}
-                user={user}
-              >
-                <DashboardPage />
-              </AuthenticatedAppShell>
-            ) : (
-              <Navigate replace to="/login" />
-            )
-          }
+          element={renderAuthenticatedRoute(<DashboardPage />)}
           path="/dashboard"
+        />
+        <Route
+          element={renderAuthenticatedRoute(<StaffSettingsPage />, ['admin'])}
+          path="/settings"
         />
         <Route
           element={

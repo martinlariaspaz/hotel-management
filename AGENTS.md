@@ -20,6 +20,12 @@ See: `agents/system-execution-planner-agent.md`
 
 Use this agent when the project needs planning, task decomposition, technical sequencing, task files, clarification questions, or execution strategy before implementation.
 
+## Orchestrator Agent
+
+See: `agents/orchestrator-agent.md`
+
+Use this agent as the main coordinator for complex work. It decides when to involve the Hotel Domain Agent, System Execution Planner Agent, Frontend Agent, NestJS Backend Agent, or other specialized agents.
+
 # Agent Usage Rules
 
 Use the Frontend Agent when the task affects:
@@ -53,3 +59,11 @@ Use the NestJS Backend Agent when the task affects:
 Use the Hotel Domain Agent when a task requires hotel business reasoning.
 
 Use the System Execution Planner Agent before large implementation work, especially when a feature must be divided into small `.md` task files.
+
+# Persistent Agent Memory
+
+Feature 0 foundation follow-up notes:
+
+- Keep housekeeping room navigation scoped to operational room status and cleaning visibility only. Housekeeping must not gain access to admin inventory, rate setup, reservation editing, or payment workflows through room navigation.
+- Add backend/UI status parity tests when status contracts evolve, so reservation, room, payment, and role values cannot drift between backend enums and UI union types.
+- Use specific hotel-business conflict codes in future backend features instead of only a generic conflict code, for example `ROOM_NOT_AVAILABLE`, `CHECK_IN_ROOM_NOT_READY`, or `PAYMENT_HISTORY_DELETE_BLOCKED`.
