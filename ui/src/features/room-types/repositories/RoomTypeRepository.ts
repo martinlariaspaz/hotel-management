@@ -17,6 +17,7 @@ export type RoomTypeRepository = {
   ): Promise<RoomType>;
   deactivateRoomType(token: string, roomTypeId: string): Promise<RoomType>;
   getRoomType(token: string, roomTypeId: string): Promise<RoomType>;
+  listActiveRoomTypes(): Promise<RoomType[]>;
   listRoomTypes(token: string): Promise<RoomType[]>;
   updateRoomType(
     token: string,
@@ -26,4 +27,3 @@ export type RoomTypeRepository = {
 };
 
 export type { RoomTypeRepository as default };
-

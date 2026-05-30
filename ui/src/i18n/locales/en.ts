@@ -2,6 +2,7 @@ const enTranslations = {
   common: {
     actions: {
       cancel: 'Cancel',
+      clear: 'Clear',
       deactivate: 'Deactivate',
       edit: 'Edit',
       refresh: 'Refresh',
@@ -283,6 +284,79 @@ const enTranslations = {
       title: 'Deactivate room type',
       description:
         'Deactivate {name}? It will stop being offered for new inventory setup while existing records remain available.',
+    },
+  },
+  roomsPage: {
+    header: {
+      ariaLabel: 'Room inventory and status board',
+      eyebrow: 'Operations',
+      title: 'Rooms',
+    },
+    management: {
+      eyebrow: 'Room inventory',
+      title: 'Physical rooms',
+      createAction: 'Create room',
+    },
+    filters: {
+      status: {
+        label: 'Status',
+        placeholder: 'Select a status',
+      },
+      roomType: {
+        label: 'Room type',
+        placeholder: 'Select a room type',
+      },
+      floor: {
+        label: 'Floor',
+        placeholder: 'Enter a floor',
+      },
+    },
+    list: {
+      loading: 'Loading rooms',
+      empty: 'No rooms match these filters.',
+      noFloor: 'No floor',
+      capacityValue: '{count} guests',
+      statusControlAriaLabel: 'Update room {roomNumber} status',
+      columns: {
+        actions: 'Actions',
+        floor: 'Floor',
+        roomNumber: 'Room',
+        roomType: 'Room type',
+        status: 'Status',
+      },
+    },
+    board: {
+      eyebrow: 'Status board',
+      title: 'Room operation by status',
+      loading: 'Loading room status board',
+      noRoomsForStatus: 'No rooms in this status.',
+      roomCount: '{count} rooms',
+    },
+    form: {
+      createTitle: 'Create room',
+      updateTitle: 'Update room',
+      createSubmit: 'Create room',
+      updateSubmit: 'Save changes',
+      fields: {
+        roomNumber: {
+          label: 'Room number',
+          placeholder: 'Enter a room number',
+          required: 'Room number is required',
+        },
+        roomType: {
+          label: 'Room type',
+          placeholder: 'Select a room type',
+          required: 'Room type is required',
+        },
+        floor: {
+          label: 'Floor',
+          placeholder: 'Enter a floor',
+        },
+        notes: {
+          label: 'Notes',
+          placeholder: 'Enter operational notes',
+        },
+      },
     },
   },
 } as const;

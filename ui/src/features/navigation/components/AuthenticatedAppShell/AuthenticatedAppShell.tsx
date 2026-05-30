@@ -81,7 +81,6 @@ const navigationItems: readonly AppNavigationItem[] = [
     roles: ['admin', 'reception', 'management'],
   },
   {
-    disabled: true,
     icon: BedDouble,
     id: 'rooms',
     labelKey: 'appShell.navigation.rooms',

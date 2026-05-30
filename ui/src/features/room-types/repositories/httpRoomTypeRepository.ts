@@ -66,6 +66,18 @@ export function createHttpRoomTypeRepository(
       return parseJsonResponse<RoomType>(response);
     },
 
+    async listActiveRoomTypes(): Promise<RoomType[]> {
+      const response = await fetch(`${apiUrl}/api/room-types`);
+      const roomTypes = await parseJsonResponse<
+        Omit<RoomType, 'isActive'>[]
+      >(response);
+
+      return roomTypes.map((roomType) => ({
+        ...roomType,
+        isActive: true,
+      }));
+    },
+
     async listRoomTypes(token: string): Promise<RoomType[]> {
       const response = await fetch(`${apiUrl}/api/admin/room-types`, {
         headers: {
@@ -96,4 +108,3 @@ export function createHttpRoomTypeRepository(
 }
 
 export default createHttpRoomTypeRepository;
-

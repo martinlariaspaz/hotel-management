@@ -87,6 +87,12 @@ export function createMockRoomTypeRepository(): RoomTypeRepository {
       return roomType;
     },
 
+    async listActiveRoomTypes(): Promise<RoomType[]> {
+      return roomTypes
+        .filter((roomType) => roomType.isActive)
+        .sort((first, second) => first.name.localeCompare(second.name));
+    },
+
     async listRoomTypes(): Promise<RoomType[]> {
       return [...roomTypes].sort((first, second) =>
         first.name.localeCompare(second.name),
@@ -121,4 +127,3 @@ export function createMockRoomTypeRepository(): RoomTypeRepository {
 }
 
 export default createMockRoomTypeRepository;
-

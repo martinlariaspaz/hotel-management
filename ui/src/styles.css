@@ -96,6 +96,7 @@ button {
 
 .staff-settings-page,
 .room-types-page,
+.rooms-page,
 .access-denied-page {
   min-height: calc(100vh - 68px);
   padding: var(--mantine-spacing-sm) 0 var(--mantine-spacing-xl);
@@ -113,6 +114,10 @@ button {
   width: 100%;
 }
 
+.rooms-container {
+  width: 100%;
+}
+
 .dashboard-header {
   padding-right: 0;
 }
@@ -122,6 +127,10 @@ button {
 }
 
 .room-types-header {
+  padding-right: 0;
+}
+
+.rooms-header {
   padding-right: 0;
 }
 
@@ -166,6 +175,10 @@ button {
   min-width: 0;
 }
 
+.room-management-section {
+  min-width: 0;
+}
+
 .staff-user-form-switch-field {
   display: flex;
   align-items: center;
@@ -180,6 +193,16 @@ button {
 
 .room-types-table-panel {
   overflow: hidden;
+  background: light-dark(var(--mantine-color-white), var(--mantine-color-dark-6));
+}
+
+.rooms-table-panel {
+  overflow: hidden;
+  background: light-dark(var(--mantine-color-white), var(--mantine-color-dark-6));
+}
+
+.room-filter-panel,
+.room-status-board-column {
   background: light-dark(var(--mantine-color-white), var(--mantine-color-dark-6));
 }
 
@@ -214,6 +237,7 @@ button {
 @media (max-width: 48em) {
   .dashboard-page,
   .staff-settings-page,
+  .rooms-page,
   .room-types-page {
     padding: 0 0 var(--mantine-spacing-lg);
   }
@@ -221,6 +245,10 @@ button {
   .dashboard-header,
   .staff-settings-header,
   .room-types-header {
+    padding-right: 0;
+  }
+
+  .rooms-header {
     padding-right: 0;
   }
 
@@ -252,6 +280,7 @@ button {
 
   .dashboard-header,
   .staff-settings-header,
+  .rooms-header,
   .room-types-header {
     padding-right: 0;
   }
