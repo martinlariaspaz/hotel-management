@@ -4,6 +4,7 @@ const esARTranslations = {
   common: {
     actions: {
       cancel: "Cancelar",
+      clear: "Limpiar",
       deactivate: "Desactivar",
       edit: "Editar",
       save: "Guardar",
@@ -287,6 +288,79 @@ const esARTranslations = {
       title: "Desactivar tipo de habitaci\u00f3n",
       description:
         "\u00bfDesactivar {name}? Dejar\u00e1 de ofrecerse para nueva configuraci\u00f3n de inventario, pero los registros existentes seguir\u00e1n disponibles.",
+    },
+  },
+  roomsPage: {
+    header: {
+      ariaLabel: "Inventario y tablero de estado de habitaciones",
+      eyebrow: "Operaciones",
+      title: "Habitaciones",
+    },
+    management: {
+      eyebrow: "Inventario de habitaciones",
+      title: "Habitaciones f\u00edsicas",
+      createAction: "Crear habitaci\u00f3n",
+    },
+    filters: {
+      status: {
+        label: "Estado",
+        placeholder: "Seleccione un estado",
+      },
+      roomType: {
+        label: "Tipo de habitaci\u00f3n",
+        placeholder: "Seleccione un tipo de habitaci\u00f3n",
+      },
+      floor: {
+        label: "Piso",
+        placeholder: "Ingrese un piso",
+      },
+    },
+    list: {
+      loading: "Cargando habitaciones",
+      empty: "No hay habitaciones para estos filtros.",
+      noFloor: "Sin piso",
+      capacityValue: "{count} hu\u00e9spedes",
+      statusControlAriaLabel: "Actualizar estado de la habitaci\u00f3n {roomNumber}",
+      columns: {
+        actions: "Acciones",
+        floor: "Piso",
+        roomNumber: "Habitaci\u00f3n",
+        roomType: "Tipo de habitaci\u00f3n",
+        status: "Estado",
+      },
+    },
+    board: {
+      eyebrow: "Tablero de estado",
+      title: "Operaci\u00f3n de habitaciones por estado",
+      loading: "Cargando tablero de habitaciones",
+      noRoomsForStatus: "No hay habitaciones en este estado.",
+      roomCount: "{count} habitaciones",
+    },
+    form: {
+      createTitle: "Crear habitaci\u00f3n",
+      updateTitle: "Actualizar habitaci\u00f3n",
+      createSubmit: "Crear habitaci\u00f3n",
+      updateSubmit: "Guardar cambios",
+      fields: {
+        roomNumber: {
+          label: "N\u00famero de habitaci\u00f3n",
+          placeholder: "Ingrese un n\u00famero de habitaci\u00f3n",
+          required: "El n\u00famero de habitaci\u00f3n es obligatorio",
+        },
+        roomType: {
+          label: "Tipo de habitaci\u00f3n",
+          placeholder: "Seleccione un tipo de habitaci\u00f3n",
+          required: "El tipo de habitaci\u00f3n es obligatorio",
+        },
+        floor: {
+          label: "Piso",
+          placeholder: "Ingrese un piso",
+        },
+        notes: {
+          label: "Notas",
+          placeholder: "Ingrese notas operativas",
+        },
+      },
     },
   },
 } as const satisfies TranslationMessages;

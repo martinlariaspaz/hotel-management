@@ -22,6 +22,7 @@ import { isSupportedLocale, useI18n } from './i18n';
 import {
   DashboardPage,
   LoginPage,
+  RoomsPage,
   RoomTypesPage,
   StaffSettingsPage,
 } from './pages';
@@ -204,6 +205,14 @@ function App() {
         <Route
           element={renderAuthenticatedRoute(<RoomTypesPage />, ['admin'])}
           path="/room-types"
+        />
+        <Route
+          element={renderAuthenticatedRoute(<RoomsPage />, [
+            'admin',
+            'reception',
+            'housekeeping',
+          ])}
+          path="/rooms"
         />
         <Route
           element={renderAuthenticatedRoute(<StaffSettingsPage />, ['admin'])}

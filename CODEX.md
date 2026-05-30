@@ -2,6 +2,12 @@
 
 Coding guidelines for this repository. These rules apply especially to the UI app in `ui/`.
 
+## BE
+
+### Socket
+
+- Use Socket for realtime connections.
+
 ## UI
 
 The UI should grow around a feature-based architecture instead of organizing all logic by screen. Pages compose sections, and sections consume features.
