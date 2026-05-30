@@ -19,7 +19,12 @@ import { Navigate, Route, Routes } from 'react-router-dom';
 import { AuthenticatedAppShell } from './features/navigation';
 import { RoleProtectedRoute, useAuth, type UserRole } from './features/auth';
 import { isSupportedLocale, useI18n } from './i18n';
-import { DashboardPage, LoginPage, StaffSettingsPage } from './pages';
+import {
+  DashboardPage,
+  LoginPage,
+  RoomTypesPage,
+  StaffSettingsPage,
+} from './pages';
 import { getRepositoryApiErrorTranslationKey } from './repositories';
 
 function ColorSchemeToggle() {
@@ -195,6 +200,10 @@ function App() {
         <Route
           element={renderAuthenticatedRoute(<DashboardPage />)}
           path="/dashboard"
+        />
+        <Route
+          element={renderAuthenticatedRoute(<RoomTypesPage />, ['admin'])}
+          path="/room-types"
         />
         <Route
           element={renderAuthenticatedRoute(<StaffSettingsPage />, ['admin'])}

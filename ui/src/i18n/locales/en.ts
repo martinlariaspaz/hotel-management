@@ -2,6 +2,7 @@ const enTranslations = {
   common: {
     actions: {
       cancel: 'Cancel',
+      deactivate: 'Deactivate',
       edit: 'Edit',
       refresh: 'Refresh',
       save: 'Save',
@@ -93,6 +94,7 @@ const enTranslations = {
       payments: 'Payments',
       reports: 'Reports',
       reservations: 'Reservations',
+      roomTypes: 'Room types',
       rooms: 'Rooms',
       settings: 'Settings',
     },
@@ -213,6 +215,74 @@ const enTranslations = {
           label: 'Active user',
         },
       },
+    },
+  },
+  roomTypesPage: {
+    header: {
+      ariaLabel: 'Room type management',
+      eyebrow: 'Inventory',
+      title: 'Room types',
+    },
+    management: {
+      eyebrow: 'Room type setup',
+      title: 'Nightly inventory categories',
+      createAction: 'Create room type',
+    },
+    list: {
+      loading: 'Loading room types',
+      empty: 'No room types yet.',
+      noAmenities: 'No amenities listed',
+      capacityValue: '{count} guests',
+      columns: {
+        actions: 'Actions',
+        baseRate: 'Base nightly rate',
+        capacity: 'Capacity',
+        name: 'Room type',
+        status: 'Status',
+      },
+      status: {
+        active: 'Active',
+        inactive: 'Inactive',
+      },
+    },
+    form: {
+      createTitle: 'Create room type',
+      updateTitle: 'Update room type',
+      createSubmit: 'Create room type',
+      updateSubmit: 'Save changes',
+      fields: {
+        name: {
+          label: 'Name',
+          placeholder: 'Enter a room type name',
+          required: 'Name is required',
+        },
+        capacity: {
+          label: 'Capacity',
+          placeholder: 'Enter a guest capacity',
+          required: 'Capacity is required',
+          min: 'Capacity must be at least 1 guest',
+        },
+        baseNightlyRate: {
+          label: 'Base nightly rate',
+          placeholder: 'Enter a nightly rate',
+          required: 'Base nightly rate is required',
+          min: 'Base nightly rate must be positive',
+        },
+        amenities: {
+          label: 'Amenities',
+          placeholder: 'Enter amenities separated by commas or lines',
+        },
+        photoUrls: {
+          label: 'Photo URLs',
+          placeholder: 'Enter photo URLs separated by commas or lines',
+          url: 'Every photo URL must start with http:// or https://',
+        },
+      },
+    },
+    deactivate: {
+      title: 'Deactivate room type',
+      description:
+        'Deactivate {name}? It will stop being offered for new inventory setup while existing records remain available.',
     },
   },
 } as const;
