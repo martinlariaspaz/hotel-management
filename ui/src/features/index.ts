@@ -1,5 +1,6 @@
 export * from './auth';
 export * from './health';
+export * from './maintenance-blocks';
 export * from './navigation';
 export * from './realtime';
 export * from './room-types';

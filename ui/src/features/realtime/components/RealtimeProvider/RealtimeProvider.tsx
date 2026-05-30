@@ -3,6 +3,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import { io } from 'socket.io-client';
 import { REALTIME_URL } from '../../../../config';
 import { useAppStore } from '../../../../store';
+import { maintenanceBlockQueryKeys } from '../../../maintenance-blocks';
 import { roomTypeQueryKeys } from '../../../room-types';
 import { roomQueryKeys } from '../../../rooms';
 import { staffQueryKeys } from '../../../staff';
@@ -90,11 +91,34 @@ function RealtimeProvider({ children }: PropsWithChildren) {
       void queryClient.invalidateQueries({ queryKey: roomQueryKeys.all });
     }
 
+    function handleMaintenanceBlocksChanged(payload: unknown): void {
+      if (!isRealtimeMutationPayload(payload)) {
+        return;
+      }
+
+      if (payload.entity !== 'maintenance-block') {
+        return;
+      }
+
+      void queryClient.invalidateQueries({
+        queryKey: maintenanceBlockQueryKeys.all,
+      });
+      void queryClient.invalidateQueries({ queryKey: roomQueryKeys.all });
+    }
+
+    socket.on(
+      realtimeEvents.maintenanceBlocksChanged,
+      handleMaintenanceBlocksChanged,
+    );
     socket.on(realtimeEvents.staffUsersChanged, handleStaffUsersChanged);
     socket.on(realtimeEvents.roomTypesChanged, handleRoomTypesChanged);
     socket.on(realtimeEvents.roomsChanged, handleRoomsChanged);
 
     return () => {
+      socket.off(
+        realtimeEvents.maintenanceBlocksChanged,
+        handleMaintenanceBlocksChanged,
+      );
       socket.off(realtimeEvents.staffUsersChanged, handleStaffUsersChanged);
       socket.off(realtimeEvents.roomTypesChanged, handleRoomTypesChanged);
       socket.off(realtimeEvents.roomsChanged, handleRoomsChanged);

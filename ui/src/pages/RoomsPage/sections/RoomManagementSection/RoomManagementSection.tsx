@@ -14,7 +14,17 @@ import {
   Title,
   Tooltip,
 } from '@mantine/core';
-import { BedDouble, X } from 'lucide-react';
+import { BedDouble, X, XCircle } from 'lucide-react';
+import {
+  MaintenanceBlockForm,
+  MaintenanceBlocksPanel,
+  isMaintenanceBlockDateRangeValid,
+  useMaintenanceBlocks,
+  type CreateMaintenanceBlockInput,
+  type MaintenanceBlock,
+  type MaintenanceBlockListFilters,
+  type MaintenanceBlockRoomOption,
+} from '../../../../features/maintenance-blocks';
 import {
   useActiveRoomTypes,
   type RoomType,
@@ -46,6 +56,20 @@ type RoomTypeOption = {
   id: string;
   name: string;
 };
+
+function toDateInputValue(date: Date): string {
+  const timezoneOffset = date.getTimezoneOffset() * 60_000;
+
+  return new Date(date.getTime() - timezoneOffset).toISOString().slice(0, 10);
+}
+
+function addDays(date: Date, days: number): Date {
+  const nextDate = new Date(date);
+
+  nextDate.setDate(nextDate.getDate() + days);
+
+  return nextDate;
+}
 
 function getFilterRoomTypeOptions(
   activeRoomTypes: RoomType[],
@@ -83,6 +107,15 @@ function RoomManagementSection() {
   const [floorFilter, setFloorFilter] = useState('');
   const [isCreateOpen, setIsCreateOpen] = useState(false);
   const [editingRoom, setEditingRoom] = useState<Room | null>(null);
+  const [maintenanceRoom, setMaintenanceRoom] = useState<Room | null>(null);
+  const [maintenanceBlockToCancel, setMaintenanceBlockToCancel] =
+    useState<MaintenanceBlock | null>(null);
+  const [maintenanceStartDate, setMaintenanceStartDate] = useState(() =>
+    toDateInputValue(new Date()),
+  );
+  const [maintenanceEndDate, setMaintenanceEndDate] = useState(() =>
+    toDateInputValue(addDays(new Date(), 30)),
+  );
   const canManageInventory = canManageRoomInventory(role);
   const filters = useMemo<RoomListFilters>(
     () => ({
@@ -91,6 +124,18 @@ function RoomManagementSection() {
       floor: floorFilter.trim() || undefined,
     }),
     [floorFilter, roomTypeFilter, statusFilter],
+  );
+  const maintenanceFilters = useMemo<MaintenanceBlockListFilters>(
+    () => ({
+      startDate: maintenanceStartDate,
+      endDate: maintenanceEndDate,
+      status: 'active',
+    }),
+    [maintenanceEndDate, maintenanceStartDate],
+  );
+  const canLoadMaintenanceBlocks = isMaintenanceBlockDateRangeValid(
+    maintenanceStartDate,
+    maintenanceEndDate,
   );
   const {
     createError,
@@ -106,6 +151,19 @@ function RoomManagementSection() {
     updateRoom,
     updateRoomStatus,
   } = useRooms(filters);
+  const {
+    cancelError: maintenanceCancelError,
+    cancelMaintenanceBlock,
+    createError: maintenanceCreateError,
+    createMaintenanceBlock,
+    isCancelling: isCancellingMaintenanceBlock,
+    isCreating: isCreatingMaintenanceBlock,
+    isLoading: isLoadingMaintenanceBlocks,
+    listError: maintenanceListError,
+    maintenanceBlocks,
+  } = useMaintenanceBlocks(maintenanceFilters, {
+    enabled: canLoadMaintenanceBlocks,
+  });
   const {
     activeRoomTypes,
     isLoading: isLoadingRoomTypes,
@@ -125,6 +183,14 @@ function RoomManagementSection() {
     label: roomType.name,
     value: roomType.id,
   }));
+  const maintenanceRoomOptions = useMemo<MaintenanceBlockRoomOption[]>(
+    () =>
+      rooms.map((room) => ({
+        id: room.id,
+        label: `${room.roomNumber} - ${room.roomType.name}`,
+      })),
+    [rooms],
+  );
   const hasActiveFilters =
     Boolean(statusFilter) ||
     Boolean(roomTypeFilter) ||
@@ -143,6 +209,15 @@ function RoomManagementSection() {
     : null;
   const roomTypeListErrorMessage = roomTypeListError
     ? t(getRepositoryApiErrorTranslationKey(roomTypeListError))
+    : null;
+  const maintenanceCreateErrorMessage = maintenanceCreateError
+    ? t(getRepositoryApiErrorTranslationKey(maintenanceCreateError))
+    : null;
+  const maintenanceListErrorMessage = maintenanceListError
+    ? t(getRepositoryApiErrorTranslationKey(maintenanceListError))
+    : null;
+  const maintenanceCancelErrorMessage = maintenanceCancelError
+    ? t(getRepositoryApiErrorTranslationKey(maintenanceCancelError))
     : null;
 
   async function handleCreate(input: CreateRoomInput): Promise<void> {
@@ -164,6 +239,22 @@ function RoomManagementSection() {
     status: RoomStatus,
   ): Promise<void> {
     await updateRoomStatus(room.id, status).catch(() => undefined);
+  }
+
+  async function handleCreateMaintenanceBlock(
+    input: CreateMaintenanceBlockInput,
+  ): Promise<void> {
+    await createMaintenanceBlock(input);
+    setMaintenanceRoom(null);
+  }
+
+  async function handleCancelMaintenanceBlock(): Promise<void> {
+    if (!maintenanceBlockToCancel) {
+      return;
+    }
+
+    await cancelMaintenanceBlock(maintenanceBlockToCancel.id);
+    setMaintenanceBlockToCancel(null);
   }
 
   function clearFilters(): void {
@@ -282,7 +373,37 @@ function RoomManagementSection() {
             </Text>
             <Title order={2}>{t('roomsPage.board.title')}</Title>
           </Stack>
-          <RoomStatusBoard isLoading={isLoading} rooms={rooms} />
+          <RoomStatusBoard
+            canCreateMaintenanceBlock={canManageInventory}
+            isLoading={isLoading}
+            onCreateMaintenanceBlock={setMaintenanceRoom}
+            rooms={rooms}
+          />
+        </Stack>
+
+        <Stack gap="lg">
+          <Stack gap={2}>
+            <Text c="dimmed" fw={700} size="xs" tt="uppercase">
+              {t('roomsPage.maintenance.eyebrow')}
+            </Text>
+            <Title order={2}>{t('roomsPage.maintenance.title')}</Title>
+          </Stack>
+          <MaintenanceBlocksPanel
+            blocks={maintenanceBlocks}
+            canCancel={canManageInventory}
+            endDate={maintenanceEndDate}
+            errorMessage={
+              !canLoadMaintenanceBlocks
+                ? t('roomsPage.maintenance.filters.invalidRange')
+                : maintenanceListErrorMessage
+            }
+            isCancelling={isCancellingMaintenanceBlock}
+            isLoading={isLoadingMaintenanceBlocks}
+            onCancel={setMaintenanceBlockToCancel}
+            onEndDateChange={setMaintenanceEndDate}
+            onStartDateChange={setMaintenanceStartDate}
+            startDate={maintenanceStartDate}
+          />
         </Stack>
       </Stack>
 
@@ -318,6 +439,73 @@ function RoomManagementSection() {
             room={editingRoom}
             roomTypes={roomTypeOptions}
           />
+        ) : null}
+      </Modal>
+
+      <Modal
+        onClose={() => setMaintenanceRoom(null)}
+        opened={Boolean(maintenanceRoom)}
+        title={t('roomsPage.maintenance.form.createTitle')}
+      >
+        {maintenanceRoom ? (
+          <MaintenanceBlockForm
+            defaultRoomId={maintenanceRoom.id}
+            errorMessage={maintenanceCreateErrorMessage}
+            isSubmitting={isCreatingMaintenanceBlock}
+            key={maintenanceRoom.id}
+            lockRoom
+            onCancel={() => setMaintenanceRoom(null)}
+            onSubmit={handleCreateMaintenanceBlock}
+            roomOptions={maintenanceRoomOptions}
+          />
+        ) : null}
+      </Modal>
+
+      <Modal
+        onClose={() => setMaintenanceBlockToCancel(null)}
+        opened={Boolean(maintenanceBlockToCancel)}
+        title={t('roomsPage.maintenance.cancel.title')}
+      >
+        {maintenanceBlockToCancel ? (
+          <Stack gap="md">
+            <Text>
+              {t('roomsPage.maintenance.cancel.description')
+                .replace(
+                  '{roomNumber}',
+                  maintenanceBlockToCancel.room.roomNumber,
+                )
+                .replace('{startDate}', maintenanceBlockToCancel.startDate)
+                .replace('{endDate}', maintenanceBlockToCancel.endDate)}
+            </Text>
+
+            {maintenanceCancelErrorMessage ? (
+              <Alert color="red" variant="light">
+                {maintenanceCancelErrorMessage}
+              </Alert>
+            ) : null}
+
+            <Group justify="flex-end">
+              <Button
+                disabled={isCancellingMaintenanceBlock}
+                onClick={() => setMaintenanceBlockToCancel(null)}
+                type="button"
+                variant="default"
+              >
+                {t('common.actions.cancel')}
+              </Button>
+              <Button
+                color="red"
+                leftSection={<XCircle size={18} />}
+                loading={isCancellingMaintenanceBlock}
+                onClick={() =>
+                  void handleCancelMaintenanceBlock().catch(() => undefined)
+                }
+                type="button"
+              >
+                {t('roomsPage.maintenance.cancel.confirm')}
+              </Button>
+            </Group>
+          </Stack>
         ) : null}
       </Modal>
     </Box>

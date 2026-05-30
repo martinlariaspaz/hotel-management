@@ -6,6 +6,7 @@ import { AuthModule } from "./auth/auth.module";
 import { DatabaseModule } from "./database/database.module";
 import { HealthModule } from "./health/health.module";
 import { MailModule } from "./mail/mail.module";
+import { MaintenanceBlocksModule } from "./maintenance-blocks/maintenance-blocks.module";
 import { RealtimeModule } from "./realtime/realtime.module";
 import { RoomTypesModule } from "./room-types/room-types.module";
 import { RoomsModule } from "./rooms/rooms.module";
@@ -21,6 +22,7 @@ import { RoomsModule } from "./rooms/rooms.module";
     DatabaseModule,
     HealthModule,
     MailModule,
+    MaintenanceBlocksModule,
     RealtimeModule,
     RoomTypesModule,
     RoomsModule,

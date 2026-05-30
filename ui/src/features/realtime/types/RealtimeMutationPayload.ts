@@ -1,6 +1,14 @@
-export type RealtimeMutationAction = 'created' | 'deactivated' | 'updated';
+export type RealtimeMutationAction =
+  | 'cancelled'
+  | 'created'
+  | 'deactivated'
+  | 'updated';
 
-export type RealtimeMutationEntity = 'room' | 'room-type' | 'staff-user';
+export type RealtimeMutationEntity =
+  | 'maintenance-block'
+  | 'room'
+  | 'room-type'
+  | 'staff-user';
 
 type RealtimeMutationPayload = {
   action: RealtimeMutationAction;

@@ -336,6 +336,75 @@ const esARTranslations = {
       noRoomsForStatus: "No hay habitaciones en este estado.",
       roomCount: "{count} habitaciones",
     },
+    maintenance: {
+      eyebrow: "Mantenimiento",
+      title: "Bloqueos de habitaciones",
+      createFromBoard: "Bloquear habitaci\u00f3n {roomNumber}",
+      status: {
+        active: "Activo",
+        cancelled: "Cancelado",
+      },
+      filters: {
+        startDate: {
+          label: "Fecha de inicio",
+          placeholder: "AAAA-MM-DD",
+        },
+        endDate: {
+          label: "Fecha de fin",
+          placeholder: "AAAA-MM-DD",
+        },
+        invalidRange: "Eleg\u00ed una fecha de fin posterior a la de inicio.",
+      },
+      list: {
+        loading: "Cargando bloqueos de mantenimiento",
+        empty: "No hay bloqueos activos en este rango.",
+        dateRange: "{startDate} al {endDate}",
+        columns: {
+          actions: "Acciones",
+          dates: "Fechas",
+          reason: "Motivo",
+          room: "Habitaci\u00f3n",
+          status: "Estado",
+        },
+      },
+      form: {
+        createTitle: "Crear bloqueo de mantenimiento",
+        createSubmit: "Crear bloqueo",
+        fields: {
+          room: {
+            label: "Habitaci\u00f3n",
+            placeholder: "Seleccione una habitaci\u00f3n",
+            required: "La habitaci\u00f3n es obligatoria",
+          },
+          startDate: {
+            label: "Fecha de inicio",
+            placeholder: "AAAA-MM-DD",
+            required: "La fecha de inicio es obligatoria",
+            date: "Ingres\u00e1 una fecha de inicio v\u00e1lida",
+          },
+          endDate: {
+            label: "Fecha de fin",
+            placeholder: "AAAA-MM-DD",
+            required: "La fecha de fin es obligatoria",
+            date: "Ingres\u00e1 una fecha de fin v\u00e1lida",
+            afterStart:
+              "La fecha de fin debe ser posterior a la fecha de inicio",
+          },
+          reason: {
+            label: "Motivo",
+            placeholder: "Ingrese un motivo de mantenimiento",
+            required: "El motivo es obligatorio",
+          },
+        },
+      },
+      cancel: {
+        action: "Cancelar bloqueo",
+        title: "Cancelar bloqueo de mantenimiento",
+        description:
+          "\u00bfCancelar el bloqueo de mantenimiento de la habitaci\u00f3n {roomNumber} del {startDate} al {endDate}?",
+        confirm: "Cancelar bloqueo",
+      },
+    },
     form: {
       createTitle: "Crear habitaci\u00f3n",
       updateTitle: "Actualizar habitaci\u00f3n",

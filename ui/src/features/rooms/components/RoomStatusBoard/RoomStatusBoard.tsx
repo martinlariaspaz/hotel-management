@@ -4,12 +4,15 @@ import {
   Box,
   Center,
   Group,
+  ActionIcon,
   Loader,
   Paper,
   SimpleGrid,
   Stack,
   Text,
+  Tooltip,
 } from '@mantine/core';
+import { Wrench } from 'lucide-react';
 import { useI18n } from '../../../../i18n';
 import {
   getRoomStatusColor,
@@ -20,7 +23,9 @@ import { ROOM_STATUS_VALUES } from '../../business';
 import type { Room } from '../../types';
 
 type RoomStatusBoardProps = {
+  canCreateMaintenanceBlock?: boolean;
   isLoading: boolean;
+  onCreateMaintenanceBlock?(room: Room): void;
   rooms: Room[];
 };
 
@@ -49,7 +54,12 @@ function groupRoomsByType(rooms: Room[]): RoomTypeGroup[] {
   );
 }
 
-function RoomStatusBoard({ isLoading, rooms }: RoomStatusBoardProps) {
+function RoomStatusBoard({
+  canCreateMaintenanceBlock = false,
+  isLoading,
+  onCreateMaintenanceBlock,
+  rooms,
+}: RoomStatusBoardProps) {
   const { t } = useI18n();
   const roomsByStatus = useMemo(() => {
     return ROOM_STATUS_VALUES.reduce<Record<RoomStatus, RoomTypeGroup[]>>(
@@ -109,13 +119,31 @@ function RoomStatusBoard({ isLoading, rooms }: RoomStatusBoardProps) {
                       </Text>
                       <Group gap={6} mt={6}>
                         {group.rooms.map((room) => (
-                          <Badge
-                            key={room.id}
-                            radius="sm"
-                            variant="default"
-                          >
-                            {room.roomNumber}
-                          </Badge>
+                          <Group gap={4} key={room.id} wrap="nowrap">
+                            <Badge radius="sm" variant="default">
+                              {room.roomNumber}
+                            </Badge>
+                            {canCreateMaintenanceBlock &&
+                            onCreateMaintenanceBlock ? (
+                              <Tooltip
+                                label={t(
+                                  'roomsPage.maintenance.createFromBoard',
+                                ).replace('{roomNumber}', room.roomNumber)}
+                              >
+                                <ActionIcon
+                                  aria-label={t(
+                                    'roomsPage.maintenance.createFromBoard',
+                                  ).replace('{roomNumber}', room.roomNumber)}
+                                  onClick={() => onCreateMaintenanceBlock(room)}
+                                  radius="md"
+                                  size="sm"
+                                  variant="subtle"
+                                >
+                                  <Wrench size={14} />
+                                </ActionIcon>
+                              </Tooltip>
+                            ) : null}
+                          </Group>
                         ))}
                       </Group>
                     </Box>
@@ -135,4 +163,3 @@ function RoomStatusBoard({ isLoading, rooms }: RoomStatusBoardProps) {
 }
 
 export default RoomStatusBoard;
-
