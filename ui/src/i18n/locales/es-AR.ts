@@ -4,6 +4,7 @@ const esARTranslations = {
   common: {
     actions: {
       cancel: "Cancelar",
+      deactivate: "Desactivar",
       edit: "Editar",
       save: "Guardar",
       refresh: "Actualizar",
@@ -96,6 +97,7 @@ const esARTranslations = {
       payments: "Pagos",
       reports: "Reportes",
       reservations: "Reservas",
+      roomTypes: "Tipos de habitaci\u00f3n",
       rooms: "Habitaciones",
       settings: "Configuración",
     },
@@ -217,6 +219,74 @@ const esARTranslations = {
           label: "Usuario activo",
         },
       },
+    },
+  },
+  roomTypesPage: {
+    header: {
+      ariaLabel: "Gesti\u00f3n de tipos de habitaci\u00f3n",
+      eyebrow: "Inventario",
+      title: "Tipos de habitaci\u00f3n",
+    },
+    management: {
+      eyebrow: "Configuraci\u00f3n de categor\u00edas",
+      title: "Categor\u00edas de inventario por noche",
+      createAction: "Crear tipo de habitaci\u00f3n",
+    },
+    list: {
+      loading: "Cargando tipos de habitaci\u00f3n",
+      empty: "Todav\u00eda no hay tipos de habitaci\u00f3n.",
+      noAmenities: "Sin amenities cargados",
+      capacityValue: "{count} hu\u00e9spedes",
+      columns: {
+        actions: "Acciones",
+        baseRate: "Tarifa base por noche",
+        capacity: "Capacidad",
+        name: "Tipo de habitaci\u00f3n",
+        status: "Estado",
+      },
+      status: {
+        active: "Activo",
+        inactive: "Inactivo",
+      },
+    },
+    form: {
+      createTitle: "Crear tipo de habitaci\u00f3n",
+      updateTitle: "Actualizar tipo de habitaci\u00f3n",
+      createSubmit: "Crear tipo",
+      updateSubmit: "Guardar cambios",
+      fields: {
+        name: {
+          label: "Nombre",
+          placeholder: "Ingrese un nombre de tipo de habitaci\u00f3n",
+          required: "El nombre es obligatorio",
+        },
+        capacity: {
+          label: "Capacidad",
+          placeholder: "Ingrese una capacidad de hu\u00e9spedes",
+          required: "La capacidad es obligatoria",
+          min: "La capacidad debe ser de al menos 1 hu\u00e9sped",
+        },
+        baseNightlyRate: {
+          label: "Tarifa base por noche",
+          placeholder: "Ingrese una tarifa por noche",
+          required: "La tarifa base por noche es obligatoria",
+          min: "La tarifa base por noche debe ser positiva",
+        },
+        amenities: {
+          label: "Amenities",
+          placeholder: "Ingrese amenities separados por comas o l\u00edneas",
+        },
+        photoUrls: {
+          label: "URLs de fotos",
+          placeholder: "Ingrese URLs de fotos separadas por comas o l\u00edneas",
+          url: "Cada URL de foto debe empezar con http:// o https://",
+        },
+      },
+    },
+    deactivate: {
+      title: "Desactivar tipo de habitaci\u00f3n",
+      description:
+        "\u00bfDesactivar {name}? Dejar\u00e1 de ofrecerse para nueva configuraci\u00f3n de inventario, pero los registros existentes seguir\u00e1n disponibles.",
     },
   },
 } as const satisfies TranslationMessages;

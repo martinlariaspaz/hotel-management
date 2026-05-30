@@ -25,6 +25,7 @@ import {
   LayoutDashboard,
   LogOut,
   Settings,
+  Tags,
   UserRound,
   type LucideIcon,
 } from 'lucide-react';
@@ -63,6 +64,13 @@ const navigationItems: readonly AppNavigationItem[] = [
     labelKey: 'appShell.navigation.dashboard',
     path: '/dashboard',
     roles: allStaffRoles,
+  },
+  {
+    icon: Tags,
+    id: 'roomTypes',
+    labelKey: 'appShell.navigation.roomTypes',
+    path: '/room-types',
+    roles: ['admin'],
   },
   {
     disabled: true,

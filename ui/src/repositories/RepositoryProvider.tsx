@@ -15,6 +15,11 @@ import {
   type HealthRepository,
 } from '../features/health/repositories';
 import {
+  createHttpRoomTypeRepository,
+  createMockRoomTypeRepository,
+  type RoomTypeRepository,
+} from '../features/room-types/repositories';
+import {
   createHttpStaffRepository,
   createMockStaffRepository,
   type StaffRepository,
@@ -23,6 +28,7 @@ import {
 export type Repositories = {
   authRepository: AuthRepository;
   healthRepository: HealthRepository;
+  roomTypeRepository: RoomTypeRepository;
   staffRepository: StaffRepository;
 };
 
@@ -67,6 +73,7 @@ function createBaseRepositories(
     return {
       authRepository: createMockAuthRepository(),
       healthRepository: createMockHealthRepository(),
+      roomTypeRepository: createMockRoomTypeRepository(),
       staffRepository: createMockStaffRepository(),
     };
   }
@@ -74,6 +81,7 @@ function createBaseRepositories(
   return {
     authRepository: createHttpAuthRepository(API_URL),
     healthRepository: createHttpHealthRepository(API_URL),
+    roomTypeRepository: createHttpRoomTypeRepository(API_URL),
     staffRepository: createHttpStaffRepository(API_URL),
   };
 }
