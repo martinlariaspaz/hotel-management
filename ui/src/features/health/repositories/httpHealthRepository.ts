@@ -1,5 +1,6 @@
 import type { HealthRepository } from './HealthRepository';
 import type { HealthCheck } from '../types';
+import { parseApiErrorResponse } from '../../../repositories/apiErrors';
 
 type HealthResponse = {
   status: string;
@@ -19,7 +20,7 @@ export function createHttpHealthRepository(apiUrl: string): HealthRepository {
       const response = await fetch(`${apiUrl}/api/health`);
 
       if (!response.ok) {
-        throw new Error('Health check failed');
+        throw await parseApiErrorResponse(response, 'Health check failed');
       }
 
       return mapHealthResponse((await response.json()) as HealthResponse);

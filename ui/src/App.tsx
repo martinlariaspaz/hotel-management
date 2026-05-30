@@ -16,9 +16,11 @@ import {
 } from '@mantine/core';
 import { Hotel, Moon, Sun } from 'lucide-react';
 import { Navigate, Route, Routes } from 'react-router-dom';
+import { AuthenticatedAppShell } from './features/navigation';
 import { useAuth } from './features/auth';
 import { isSupportedLocale, useI18n } from './i18n';
 import { DashboardPage, LoginPage } from './pages';
+import { getRepositoryApiErrorTranslationKey } from './repositories';
 
 function ColorSchemeToggle() {
   const { t } = useI18n();
@@ -69,12 +71,20 @@ function LocaleControl() {
   );
 }
 
-function AppToolbar() {
+function AppToolbarControls() {
   return (
-    <Group className="app-toolbar" gap="xs" wrap="nowrap">
+    <Group gap="xs" wrap="nowrap">
       <LocaleControl />
       <ColorSchemeToggle />
     </Group>
+  );
+}
+
+function PublicAppToolbar() {
+  return (
+    <div className="app-toolbar">
+      <AppToolbarControls />
+    </div>
   );
 }
 
@@ -115,6 +125,13 @@ function App() {
     isLoggingOut,
   } = useAuth();
   const isAuthenticated = authStatus === 'authenticated' && Boolean(user);
+  const loginErrorMessage = loginError
+    ? t(
+        getRepositoryApiErrorTranslationKey(loginError, {
+          unauthorized: 'loginPage.form.authError',
+        }),
+      )
+    : null;
 
   useEffect(() => {
     document.title = t('app.title');
@@ -123,7 +140,7 @@ function App() {
   if (authStatus === 'checking') {
     return (
       <>
-        <AppToolbar />
+        <PublicAppToolbar />
         <SessionCheckingScreen />
       </>
     );
@@ -131,18 +148,20 @@ function App() {
 
   return (
     <>
-      <AppToolbar />
       <Routes>
         <Route
           element={
             isAuthenticated ? (
               <Navigate replace to="/dashboard" />
             ) : (
-              <LoginPage
-                hasError={Boolean(loginError)}
-                isSubmitting={isLoggingIn}
-                onSubmit={login}
-              />
+              <>
+                <PublicAppToolbar />
+                <LoginPage
+                  errorMessage={loginErrorMessage}
+                  isSubmitting={isLoggingIn}
+                  onSubmit={login}
+                />
+              </>
             )
           }
           path="/login"
@@ -150,11 +169,14 @@ function App() {
         <Route
           element={
             isAuthenticated && user ? (
-              <DashboardPage
+              <AuthenticatedAppShell
                 isLoggingOut={isLoggingOut}
                 onLogout={() => void logout()}
+                utilityControls={<AppToolbarControls />}
                 user={user}
-              />
+              >
+                <DashboardPage />
+              </AuthenticatedAppShell>
             ) : (
               <Navigate replace to="/login" />
             )

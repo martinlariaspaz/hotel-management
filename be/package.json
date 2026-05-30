@@ -13,6 +13,7 @@
     "start": "nest start",
     "start:dev": "nest start --watch",
     "start:prod": "node dist/main.js",
+    "test": "node --test -r ts-node/register -r tsconfig-paths/register \"src/**/*.spec.ts\"",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {

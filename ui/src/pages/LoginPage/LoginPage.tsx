@@ -11,13 +11,13 @@ import { useI18n } from '../../i18n';
 import { LoginHeaderSection } from './sections';
 
 type LoginPageProps = {
-  hasError: boolean;
+  errorMessage: string | null;
   isSubmitting: boolean;
   onSubmit(credentials: LoginCredentials): Promise<void>;
 };
 
 function LoginPage({
-  hasError,
+  errorMessage,
   isSubmitting,
   onSubmit,
 }: LoginPageProps) {
@@ -36,7 +36,7 @@ function LoginPage({
         <Stack gap="xl">
           <LoginHeaderSection />
           <LoginForm
-            hasError={hasError}
+            errorMessage={errorMessage}
             isSubmitting={isSubmitting}
             onSubmit={onSubmit}
           />

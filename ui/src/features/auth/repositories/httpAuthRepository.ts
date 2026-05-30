@@ -3,27 +3,11 @@ import type {
   LoginCredentials,
 } from './AuthRepository';
 import type { AuthSession } from '../types';
-
-type ApiErrorResponse = {
-  message?: string | string[];
-};
-
-async function parseError(response: Response): Promise<Error> {
-  try {
-    const data = (await response.json()) as ApiErrorResponse;
-    const message = Array.isArray(data.message)
-      ? data.message.join(', ')
-      : data.message;
-
-    return new Error(message ?? 'Request failed');
-  } catch {
-    return new Error('Request failed');
-  }
-}
+import { parseApiErrorResponse } from '../../../repositories/apiErrors';
 
 async function parseJsonResponse<T>(response: Response): Promise<T> {
   if (!response.ok) {
-    throw await parseError(response);
+    throw await parseApiErrorResponse(response);
   }
 
   return (await response.json()) as T;
@@ -65,7 +49,7 @@ export function createHttpAuthRepository(apiUrl: string): AuthRepository {
       });
 
       if (!response.ok) {
-        throw await parseError(response);
+        throw await parseApiErrorResponse(response);
       }
     },
   };

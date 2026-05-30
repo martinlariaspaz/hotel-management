@@ -9,3 +9,15 @@ export type {
   Repositories,
   RepositoryEnvironment,
 } from './RepositoryProvider';
+export {
+  RepositoryApiError,
+  getRepositoryApiErrorTranslationKey,
+  isRepositoryApiError,
+  parseApiErrorResponse,
+} from './apiErrors';
+export type {
+  ApiErrorPayload,
+  ApiErrorResponse,
+  ApiErrorTranslationOverrides,
+  ApiErrorType,
+} from './apiErrors';

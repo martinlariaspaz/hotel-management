@@ -43,8 +43,7 @@ export function useAuth() {
     },
   });
 
-  const loginError =
-    loginMutation.error instanceof Error ? loginMutation.error.message : null;
+  const loginError = loginMutation.error;
   const shouldRefreshSession = auth.status === 'checking' && Boolean(auth.token);
   const millisecondsUntilExpiration = auth.expiresAt
     ? new Date(auth.expiresAt).getTime() - Date.now()

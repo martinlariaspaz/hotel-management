@@ -10,6 +10,39 @@ const esARTranslations = {
     brand: {
       productName: "Hotel Management",
     },
+    domainStatuses: {
+      payment: {
+        depositPaid: "Seña pagada",
+        paid: "Pagado",
+        partiallyPaid: "Pago parcial",
+        refundDue: "Reintegro pendiente",
+        refunded: "Reintegrado",
+        unpaid: "Impago",
+      },
+      reservation: {
+        cancelled: "Cancelada",
+        checkedIn: "Check-in realizado",
+        checkedOut: "Check-out realizado",
+        confirmed: "Confirmada",
+        noShow: "No se presentó",
+        pendingConfirmation: "Pendiente de confirmación",
+      },
+      room: {
+        available: "Disponible",
+        cleaning: "En limpieza",
+        dirty: "Sucia",
+        maintenance: "Mantenimiento",
+        occupied: "Ocupada",
+        outOfService: "Fuera de servicio",
+        reserved: "Reservada",
+      },
+    },
+    roles: {
+      admin: "Administración",
+      housekeeping: "Limpieza",
+      management: "Gerencia",
+      reception: "Recepción",
+    },
     colorScheme: {
       useDark: "Usar modo oscuro",
       useLight: "Usar modo claro",
@@ -29,11 +62,33 @@ const esARTranslations = {
     title: "Hotel Management",
     errors: {
       authSessionExpired: "Tu sesión expiró. Iniciá sesión nuevamente.",
+      businessConflict:
+        "La acción entra en conflicto con las reglas operativas del hotel.",
+      forbidden: "No tenés permiso para realizar esta acción.",
+      unauthorized: "Iniciá sesión para continuar.",
       unexpected: "Algo salió mal. Intentá de nuevo.",
+      validation: "Revisá la información e intentá de nuevo.",
     },
     sessionChecking: {
       eyebrow: "Hotel Management",
       title: "Validando sesión",
+    },
+  },
+  appShell: {
+    header: {
+      closeNavigation: "Cerrar navegación",
+      openNavigation: "Abrir navegación",
+      title: "Operaciones",
+    },
+    navigation: {
+      ariaLabel: "Navegación del personal",
+      dashboard: "Panel",
+      housekeeping: "Limpieza",
+      payments: "Pagos",
+      reports: "Reportes",
+      reservations: "Reservas",
+      rooms: "Habitaciones",
+      settings: "Configuración",
     },
   },
   loginPage: {

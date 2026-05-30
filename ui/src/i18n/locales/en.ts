@@ -8,6 +8,39 @@ const enTranslations = {
     brand: {
       productName: 'Hotel Management',
     },
+    domainStatuses: {
+      payment: {
+        depositPaid: 'Deposit paid',
+        paid: 'Paid',
+        partiallyPaid: 'Partially paid',
+        refundDue: 'Refund due',
+        refunded: 'Refunded',
+        unpaid: 'Unpaid',
+      },
+      reservation: {
+        cancelled: 'Cancelled',
+        checkedIn: 'Checked in',
+        checkedOut: 'Checked out',
+        confirmed: 'Confirmed',
+        noShow: 'No-show',
+        pendingConfirmation: 'Pending confirmation',
+      },
+      room: {
+        available: 'Available',
+        cleaning: 'Cleaning',
+        dirty: 'Dirty',
+        maintenance: 'Maintenance',
+        occupied: 'Occupied',
+        outOfService: 'Out of service',
+        reserved: 'Reserved',
+      },
+    },
+    roles: {
+      admin: 'Admin',
+      housekeeping: 'Housekeeping',
+      management: 'Management',
+      reception: 'Reception',
+    },
     colorScheme: {
       useDark: 'Use dark mode',
       useLight: 'Use light mode',
@@ -27,11 +60,32 @@ const enTranslations = {
     title: 'Hotel Management',
     errors: {
       authSessionExpired: 'Your session expired. Please sign in again.',
+      businessConflict: 'The action conflicts with hotel operating rules.',
+      forbidden: 'You do not have permission to perform this action.',
+      unauthorized: 'Please sign in to continue.',
       unexpected: 'Something went wrong. Please try again.',
+      validation: 'Check the information and try again.',
     },
     sessionChecking: {
       eyebrow: 'Hotel Management',
       title: 'Validating session',
+    },
+  },
+  appShell: {
+    header: {
+      closeNavigation: 'Close navigation',
+      openNavigation: 'Open navigation',
+      title: 'Operations',
+    },
+    navigation: {
+      ariaLabel: 'Staff navigation',
+      dashboard: 'Dashboard',
+      housekeeping: 'Housekeeping',
+      payments: 'Payments',
+      reports: 'Reports',
+      reservations: 'Reservations',
+      rooms: 'Rooms',
+      settings: 'Settings',
     },
   },
   loginPage: {

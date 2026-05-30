@@ -7,7 +7,8 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "preview": "vite preview",
-    "typecheck": "tsc --noEmit"
+    "test": "jest --runInBand",
+    "typecheck": "tsc -b --noEmit"
   },
   "dependencies": {
     "@mantine/core": "^9.2.2",
@@ -21,10 +22,14 @@
     "zustand": "^5.0.14"
   },
   "devDependencies": {
+    "@jest/globals": "^30.4.1",
+    "@swc/jest": "^0.2.39",
+    "@types/jest": "^30.0.0",
     "@types/node": "^25.9.1",
     "@types/react": "^19.2.7",
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^6.0.2",
+    "jest": "^30.4.2",
     "typescript": "^6.0.3",
     "vite": "^8.0.14"
   }
