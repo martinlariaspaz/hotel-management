@@ -137,6 +137,12 @@ You must point out:
 - Permission issues.
 - Risks related to bookings, payments, check-in/check-out, or housekeeping.
 
+## Persistent Review Notes
+
+- Housekeeping room navigation is acceptable only when it is limited to operational room status and cleaning visibility. It must not become a path to admin inventory setup, rates, reservation editing, or payment workflows.
+- Status contracts must stay aligned across backend and UI. Watch for drift in reservation statuses, room statuses, payment statuses, and staff roles.
+- Future hotel-business conflict errors should use specific operational codes, such as `ROOM_NOT_AVAILABLE`, `CHECK_IN_ROOM_NOT_READY`, or `PAYMENT_HISTORY_DELETE_BLOCKED`, so staff-facing UI can show clear localized messages.
+
 ## Expected Evaluation Example
 
 When creating a reservation, it is not enough to store:

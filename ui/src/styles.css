@@ -33,6 +33,38 @@ button {
   z-index: 200;
 }
 
+.authenticated-shell {
+  min-height: 100vh;
+  background:
+    linear-gradient(
+      180deg,
+      light-dark(var(--mantine-color-gray-0), var(--mantine-color-dark-8)),
+      light-dark(var(--mantine-color-body), var(--mantine-color-dark-9)) 22rem
+    );
+}
+
+.app-shell-header {
+  background: light-dark(
+    rgba(255, 255, 255, 0.88),
+    rgba(26, 27, 30, 0.88)
+  );
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--mantine-color-default-border);
+}
+
+.app-shell-title {
+  font-size: 1.05rem;
+  line-height: 1.1;
+}
+
+.app-shell-navbar {
+  background: light-dark(var(--mantine-color-white), var(--mantine-color-dark-8));
+}
+
+.app-shell-role {
+  max-width: 12rem;
+}
+
 .login-page {
   min-height: 100vh;
   padding: var(--mantine-spacing-md);
@@ -59,22 +91,29 @@ button {
 }
 
 .dashboard-page {
-  min-height: 100vh;
-  padding: var(--mantine-spacing-xl) 0;
-  background:
-    linear-gradient(
-      180deg,
-      var(--mantine-color-gray-0),
-      var(--mantine-color-body) 20rem
-    );
+  padding: var(--mantine-spacing-sm) 0 var(--mantine-spacing-xl);
+}
+
+.staff-settings-page,
+.access-denied-page {
+  min-height: calc(100vh - 68px);
+  padding: var(--mantine-spacing-sm) 0 var(--mantine-spacing-xl);
 }
 
 .dashboard-container {
   width: 100%;
 }
 
+.staff-settings-container {
+  width: 100%;
+}
+
 .dashboard-header {
-  padding-right: 3.75rem;
+  padding-right: 0;
+}
+
+.staff-settings-header {
+  padding-right: 0;
 }
 
 .dashboard-actions {
@@ -106,6 +145,26 @@ button {
   background: light-dark(var(--mantine-color-white), var(--mantine-color-dark-6));
 }
 
+.access-denied-panel {
+  width: min(100%, 34rem);
+}
+
+.staff-management-section {
+  min-width: 0;
+}
+
+.staff-user-form-switch-field {
+  display: flex;
+  align-items: center;
+  min-height: 2.25rem;
+  padding-top: 1.75rem;
+}
+
+.staff-table-panel {
+  overflow: hidden;
+  background: light-dark(var(--mantine-color-white), var(--mantine-color-dark-6));
+}
+
 .api-status {
   min-height: 5rem;
   padding: var(--mantine-spacing-md);
@@ -128,15 +187,6 @@ button {
     );
 }
 
-[data-mantine-color-scheme='dark'] .dashboard-page {
-  background:
-    linear-gradient(
-      180deg,
-      var(--mantine-color-dark-8),
-      var(--mantine-color-dark-9) 22rem
-    );
-}
-
 @media (max-width: 62em) {
   .dashboard-content-grid {
     grid-template-columns: 1fr;
@@ -144,17 +194,24 @@ button {
 }
 
 @media (max-width: 48em) {
-  .dashboard-page {
-    padding: var(--mantine-spacing-md) 0;
+  .dashboard-page,
+  .staff-settings-page {
+    padding: 0 0 var(--mantine-spacing-lg);
   }
 
-  .dashboard-header {
-    padding-right: 3.25rem;
+  .dashboard-header,
+  .staff-settings-header {
+    padding-right: 0;
   }
 
   .dashboard-actions {
     width: 100%;
     justify-content: flex-start;
+  }
+
+  .staff-user-form-switch-field {
+    min-height: auto;
+    padding-top: 0;
   }
 }
 
@@ -173,9 +230,9 @@ button {
     align-self: center;
   }
 
-  .dashboard-header {
+  .dashboard-header,
+  .staff-settings-header {
     padding-right: 0;
-    padding-top: 3rem;
   }
 
   .dashboard-actions {

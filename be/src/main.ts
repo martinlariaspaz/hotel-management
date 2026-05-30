@@ -2,6 +2,10 @@ import { ValidationPipe } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { NestFactory } from "@nestjs/core";
 import { AppModule } from "./app.module";
+import {
+  ApiExceptionFilter,
+  createValidationException,
+} from "./common/errors";
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -15,11 +19,13 @@ async function bootstrap() {
     origin: corsOrigin,
     credentials: true,
   });
+  app.useGlobalFilters(new ApiExceptionFilter());
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,
       transform: true,
       forbidNonWhitelisted: true,
+      exceptionFactory: createValidationException,
     }),
   );
 

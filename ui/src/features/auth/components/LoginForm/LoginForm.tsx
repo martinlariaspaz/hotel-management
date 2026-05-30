@@ -9,7 +9,7 @@ import { useI18n, type TranslationKey } from '../../../../i18n';
 import type { LoginCredentials } from '../../repositories';
 
 type LoginFormProps = {
-  hasError: boolean;
+  errorMessage: string | null;
   isSubmitting: boolean;
   onSubmit(credentials: LoginCredentials): Promise<void>;
 };
@@ -101,7 +101,7 @@ function createRegisterOptions(
 }
 
 function LoginForm({
-  hasError,
+  errorMessage,
   isSubmitting,
   onSubmit,
 }: LoginFormProps) {
@@ -146,9 +146,9 @@ function LoginForm({
           }),
         )}
 
-        {hasError ? (
+        {errorMessage ? (
           <Alert color="red" variant="light">
-            {t('loginPage.form.authError')}
+            {errorMessage}
           </Alert>
         ) : null}
 

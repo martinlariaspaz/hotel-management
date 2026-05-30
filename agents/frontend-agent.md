@@ -160,3 +160,8 @@ type ReservationStatus =
 
 type PaymentStatus = "unpaid" | "partial" | "paid" | "refunded";
 ```
+
+## Persistent Feature Notes
+
+- Keep housekeeping room navigation scoped to operational room status and cleaning visibility only. Do not expose admin inventory, rate setup, reservation editing, or payment workflows through housekeeping-visible room navigation.
+- When status contracts evolve, add or update UI tests that guard parity with backend reservation, room, payment, and role values.

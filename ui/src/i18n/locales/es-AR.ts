@@ -3,12 +3,48 @@ import type { TranslationMessages } from "./en";
 const esARTranslations = {
   common: {
     actions: {
+      cancel: "Cancelar",
+      edit: "Editar",
+      save: "Guardar",
       refresh: "Actualizar",
       signIn: "Ingresar",
       logout: "Cerrar sesión",
     },
     brand: {
       productName: "Hotel Management",
+    },
+    domainStatuses: {
+      payment: {
+        depositPaid: "Seña pagada",
+        paid: "Pagado",
+        partiallyPaid: "Pago parcial",
+        refundDue: "Reintegro pendiente",
+        refunded: "Reintegrado",
+        unpaid: "Impago",
+      },
+      reservation: {
+        cancelled: "Cancelada",
+        checkedIn: "Check-in realizado",
+        checkedOut: "Check-out realizado",
+        confirmed: "Confirmada",
+        noShow: "No se presentó",
+        pendingConfirmation: "Pendiente de confirmación",
+      },
+      room: {
+        available: "Disponible",
+        cleaning: "En limpieza",
+        dirty: "Sucia",
+        maintenance: "Mantenimiento",
+        occupied: "Ocupada",
+        outOfService: "Fuera de servicio",
+        reserved: "Reservada",
+      },
+    },
+    roles: {
+      admin: "Administración",
+      housekeeping: "Limpieza",
+      management: "Gerencia",
+      reception: "Recepción",
     },
     colorScheme: {
       useDark: "Usar modo oscuro",
@@ -29,11 +65,39 @@ const esARTranslations = {
     title: "Hotel Management",
     errors: {
       authSessionExpired: "Tu sesión expiró. Iniciá sesión nuevamente.",
+      businessConflict:
+        "La acción entra en conflicto con las reglas operativas del hotel.",
+      forbidden: "No tenés permiso para realizar esta acción.",
+      unauthorized: "Iniciá sesión para continuar.",
       unexpected: "Algo salió mal. Intentá de nuevo.",
+      validation: "Revisá la información e intentá de nuevo.",
     },
     sessionChecking: {
       eyebrow: "Hotel Management",
       title: "Validando sesión",
+    },
+    accessDenied: {
+      action: "Ir al panel",
+      description: "Tu rol de personal no permite acceder a esta secciÃ³n.",
+      eyebrow: "Control de acceso",
+      title: "Acceso denegado",
+    },
+  },
+  appShell: {
+    header: {
+      closeNavigation: "Cerrar navegación",
+      openNavigation: "Abrir navegación",
+      title: "Operaciones",
+    },
+    navigation: {
+      ariaLabel: "Navegación del personal",
+      dashboard: "Panel",
+      housekeeping: "Limpieza",
+      payments: "Pagos",
+      reports: "Reportes",
+      reservations: "Reservas",
+      rooms: "Habitaciones",
+      settings: "Configuración",
     },
   },
   loginPage: {
@@ -100,6 +164,59 @@ const esARTranslations = {
       lastCheckedFallback: "Sin comprobaciones previas",
       refresh: "Actualizar",
       error: "Falló la comprobación de salud",
+    },
+  },
+  staffSettingsPage: {
+    header: {
+      ariaLabel: "Configuraci\u00f3n del personal",
+      eyebrow: "Administraci\u00f3n",
+      title: "Acceso del personal",
+    },
+    management: {
+      eyebrow: "Roles y permisos",
+      title: "Usuarios del personal",
+      createAction: "Crear usuario",
+    },
+    list: {
+      loading: "Cargando usuarios",
+      empty: "Todav\u00eda no hay usuarios del personal.",
+      columns: {
+        actions: "Acciones",
+        role: "Rol",
+        status: "Estado",
+        username: "Usuario",
+      },
+      status: {
+        active: "Activo",
+        inactive: "Inactivo",
+      },
+    },
+    form: {
+      createTitle: "Crear usuario del personal",
+      updateTitle: "Actualizar usuario del personal",
+      createSubmit: "Crear usuario",
+      updateSubmit: "Guardar cambios",
+      fields: {
+        username: {
+          label: "Usuario",
+          placeholder: "Ingrese un usuario",
+          required: "El usuario es obligatorio",
+        },
+        password: {
+          label: "Contrase\u00f1a",
+          placeholder: "Ingrese una contrase\u00f1a",
+          required: "La contrase\u00f1a es obligatoria",
+          minLength: "La contrase\u00f1a debe tener al menos 8 caracteres",
+        },
+        role: {
+          label: "Rol",
+          placeholder: "Seleccione un rol",
+          required: "El rol es obligatorio",
+        },
+        isActive: {
+          label: "Usuario activo",
+        },
+      },
     },
   },
 } as const satisfies TranslationMessages;

@@ -1,31 +1,16 @@
 import { Container, Stack } from '@mantine/core';
-import type { AuthUser } from '../../features/auth';
 import {
   ApiStatusSection,
   DashboardHeaderSection,
   DashboardOverviewSection,
 } from './sections';
 
-type DashboardPageProps = {
-  isLoggingOut: boolean;
-  onLogout(): void;
-  user: AuthUser;
-};
-
-function DashboardPage({
-  isLoggingOut,
-  onLogout,
-  user,
-}: DashboardPageProps) {
+function DashboardPage() {
   return (
-    <main className="dashboard-page">
+    <div className="dashboard-page">
       <Container className="dashboard-container" size="xl">
         <Stack gap="xl">
-          <DashboardHeaderSection
-            isLoggingOut={isLoggingOut}
-            onLogout={onLogout}
-            user={user}
-          />
+          <DashboardHeaderSection />
 
           <section className="dashboard-content-grid">
             <DashboardOverviewSection />
@@ -33,7 +18,7 @@ function DashboardPage({
           </section>
         </Stack>
       </Container>
-    </main>
+    </div>
   );
 }
 

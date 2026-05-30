@@ -14,10 +14,16 @@ import {
   createMockHealthRepository,
   type HealthRepository,
 } from '../features/health/repositories';
+import {
+  createHttpStaffRepository,
+  createMockStaffRepository,
+  type StaffRepository,
+} from '../features/staff/repositories';
 
 export type Repositories = {
   authRepository: AuthRepository;
   healthRepository: HealthRepository;
+  staffRepository: StaffRepository;
 };
 
 export type RepositoryEnvironment = 'development' | 'mock' | 'production' | 'test';
@@ -61,12 +67,14 @@ function createBaseRepositories(
     return {
       authRepository: createMockAuthRepository(),
       healthRepository: createMockHealthRepository(),
+      staffRepository: createMockStaffRepository(),
     };
   }
 
   return {
     authRepository: createHttpAuthRepository(API_URL),
     healthRepository: createHttpHealthRepository(API_URL),
+    staffRepository: createHttpStaffRepository(API_URL),
   };
 }
 

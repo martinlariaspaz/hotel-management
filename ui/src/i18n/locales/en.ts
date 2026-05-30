@@ -1,12 +1,48 @@
 const enTranslations = {
   common: {
     actions: {
+      cancel: 'Cancel',
+      edit: 'Edit',
       refresh: 'Refresh',
+      save: 'Save',
       signIn: 'Sign in',
       logout: 'Logout',
     },
     brand: {
       productName: 'Hotel Management',
+    },
+    domainStatuses: {
+      payment: {
+        depositPaid: 'Deposit paid',
+        paid: 'Paid',
+        partiallyPaid: 'Partially paid',
+        refundDue: 'Refund due',
+        refunded: 'Refunded',
+        unpaid: 'Unpaid',
+      },
+      reservation: {
+        cancelled: 'Cancelled',
+        checkedIn: 'Checked in',
+        checkedOut: 'Checked out',
+        confirmed: 'Confirmed',
+        noShow: 'No-show',
+        pendingConfirmation: 'Pending confirmation',
+      },
+      room: {
+        available: 'Available',
+        cleaning: 'Cleaning',
+        dirty: 'Dirty',
+        maintenance: 'Maintenance',
+        occupied: 'Occupied',
+        outOfService: 'Out of service',
+        reserved: 'Reserved',
+      },
+    },
+    roles: {
+      admin: 'Admin',
+      housekeeping: 'Housekeeping',
+      management: 'Management',
+      reception: 'Reception',
     },
     colorScheme: {
       useDark: 'Use dark mode',
@@ -27,11 +63,38 @@ const enTranslations = {
     title: 'Hotel Management',
     errors: {
       authSessionExpired: 'Your session expired. Please sign in again.',
+      businessConflict: 'The action conflicts with hotel operating rules.',
+      forbidden: 'You do not have permission to perform this action.',
+      unauthorized: 'Please sign in to continue.',
       unexpected: 'Something went wrong. Please try again.',
+      validation: 'Check the information and try again.',
     },
     sessionChecking: {
       eyebrow: 'Hotel Management',
       title: 'Validating session',
+    },
+    accessDenied: {
+      action: 'Go to dashboard',
+      description: 'Your staff role does not allow access to this area.',
+      eyebrow: 'Access control',
+      title: 'Access denied',
+    },
+  },
+  appShell: {
+    header: {
+      closeNavigation: 'Close navigation',
+      openNavigation: 'Open navigation',
+      title: 'Operations',
+    },
+    navigation: {
+      ariaLabel: 'Staff navigation',
+      dashboard: 'Dashboard',
+      housekeeping: 'Housekeeping',
+      payments: 'Payments',
+      reports: 'Reports',
+      reservations: 'Reservations',
+      rooms: 'Rooms',
+      settings: 'Settings',
     },
   },
   loginPage: {
@@ -97,6 +160,59 @@ const enTranslations = {
       lastCheckedFallback: 'No previous checks',
       refresh: 'Refresh',
       error: 'Health check failed',
+    },
+  },
+  staffSettingsPage: {
+    header: {
+      ariaLabel: 'Staff settings',
+      eyebrow: 'Admin',
+      title: 'Staff access',
+    },
+    management: {
+      eyebrow: 'Roles and permissions',
+      title: 'Staff users',
+      createAction: 'Create staff user',
+    },
+    list: {
+      loading: 'Loading staff users',
+      empty: 'No staff users yet.',
+      columns: {
+        actions: 'Actions',
+        role: 'Role',
+        status: 'Status',
+        username: 'Username',
+      },
+      status: {
+        active: 'Active',
+        inactive: 'Inactive',
+      },
+    },
+    form: {
+      createTitle: 'Create staff user',
+      updateTitle: 'Update staff user',
+      createSubmit: 'Create user',
+      updateSubmit: 'Save changes',
+      fields: {
+        username: {
+          label: 'Username',
+          placeholder: 'Enter a username',
+          required: 'Username is required',
+        },
+        password: {
+          label: 'Password',
+          placeholder: 'Enter a password',
+          required: 'Password is required',
+          minLength: 'Password must have at least 8 characters',
+        },
+        role: {
+          label: 'Role',
+          placeholder: 'Select a role',
+          required: 'Role is required',
+        },
+        isActive: {
+          label: 'Active user',
+        },
+      },
     },
   },
 } as const;
