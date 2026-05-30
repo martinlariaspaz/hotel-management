@@ -2,6 +2,10 @@ import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 import { BadRequestException, NotFoundException } from "@nestjs/common";
 import type { Model } from "mongoose";
+import {
+  REALTIME_EVENT_NAMES,
+  type RealtimeGateway,
+} from "../../realtime/realtime.gateway";
 import { RoomTypesService } from "./room-types.service";
 import type { RoomTypeDocument } from "../schemas/room-type.schema";
 
@@ -15,6 +19,26 @@ type RoomTypeDocumentStub = Pick<
   | "name"
   | "photoUrls"
 >;
+
+type EmittedRealtimeEvent = {
+  event: string;
+  payload: {
+    action: string;
+    entity: string;
+    id: string;
+  };
+};
+
+function createRealtimeGatewayStub(
+  events: EmittedRealtimeEvent[],
+): RealtimeGateway {
+  return {
+    emitMutationEvent: (
+      event: string,
+      payload: EmittedRealtimeEvent["payload"],
+    ) => events.push({ event, payload }),
+  } as unknown as RealtimeGateway;
+}
 
 function createDocument(
   overrides: Partial<RoomTypeDocumentStub> = {},
@@ -81,20 +105,24 @@ describe("RoomTypesService", () => {
 
   it("creates room types with default active state and normalized empty arrays", async () => {
     let createdPayload: Record<string, unknown> | null = null;
-    const service = new RoomTypesService({
-      create: async (payload: Record<string, unknown>) => {
-        createdPayload = payload;
+    const emittedEvents: EmittedRealtimeEvent[] = [];
+    const service = new RoomTypesService(
+      {
+        create: async (payload: Record<string, unknown>) => {
+          createdPayload = payload;
 
-        return createDocument({
-          name: String(payload.name),
-          capacity: Number(payload.capacity),
-          amenities: payload.amenities as string[],
-          photoUrls: payload.photoUrls as string[],
-          baseNightlyRate: Number(payload.baseNightlyRate),
-          isActive: Boolean(payload.isActive),
-        });
-      },
-    } as unknown as Model<RoomTypeDocument>);
+          return createDocument({
+            name: String(payload.name),
+            capacity: Number(payload.capacity),
+            amenities: payload.amenities as string[],
+            photoUrls: payload.photoUrls as string[],
+            baseNightlyRate: Number(payload.baseNightlyRate),
+            isActive: Boolean(payload.isActive),
+          });
+        },
+      } as unknown as Model<RoomTypeDocument>,
+      createRealtimeGatewayStub(emittedEvents),
+    );
 
     const roomType = await service.createRoomType({
       name: "Standard",
@@ -107,6 +135,16 @@ describe("RoomTypesService", () => {
     assert.deepEqual(payload.photoUrls, []);
     assert.equal(payload.isActive, true);
     assert.equal(roomType.name, "Standard");
+    assert.deepEqual(emittedEvents, [
+      {
+        event: REALTIME_EVENT_NAMES.RoomTypesChanged,
+        payload: {
+          action: "created",
+          entity: "room-type",
+          id: "507f1f77bcf86cd799439011",
+        },
+      },
+    ]);
   });
 
   it("rejects duplicate room type names with a validation-safe bad request", async () => {
@@ -129,31 +167,32 @@ describe("RoomTypesService", () => {
 
   it("updates editable room type fields", async () => {
     let receivedUpdate: unknown;
-    const service = new RoomTypesService({
-      findByIdAndUpdate: (
-        _roomTypeId: string,
-        update: unknown,
-        _options: unknown,
-      ) => {
-        receivedUpdate = update;
-
-        return {
-          exec: async () =>
-            createDocument({
-              capacity: 4,
-              baseNightlyRate: 180000,
-            }),
-        };
-      },
-    } as unknown as Model<RoomTypeDocument>);
-
-    const roomType = await service.updateRoomType(
-      "507f1f77bcf86cd799439011",
+    const emittedEvents: EmittedRealtimeEvent[] = [];
+    const service = new RoomTypesService(
       {
-        capacity: 4,
-        baseNightlyRate: 180000,
-      },
+        findByIdAndUpdate: (
+          _roomTypeId: string,
+          update: unknown,
+          _options: unknown,
+        ) => {
+          receivedUpdate = update;
+
+          return {
+            exec: async () =>
+              createDocument({
+                capacity: 4,
+                baseNightlyRate: 180000,
+              }),
+          };
+        },
+      } as unknown as Model<RoomTypeDocument>,
+      createRealtimeGatewayStub(emittedEvents),
     );
+
+    const roomType = await service.updateRoomType("507f1f77bcf86cd799439011", {
+      capacity: 4,
+      baseNightlyRate: 180000,
+    });
 
     assert.deepEqual(receivedUpdate, {
       $set: {
@@ -162,6 +201,16 @@ describe("RoomTypesService", () => {
       },
     });
     assert.equal(roomType.capacity, 4);
+    assert.deepEqual(emittedEvents, [
+      {
+        event: REALTIME_EVENT_NAMES.RoomTypesChanged,
+        payload: {
+          action: "updated",
+          entity: "room-type",
+          id: "507f1f77bcf86cd799439011",
+        },
+      },
+    ]);
   });
 
   it("rejects empty room type updates", async () => {
@@ -175,19 +224,23 @@ describe("RoomTypesService", () => {
 
   it("deactivates room types without hard deleting them", async () => {
     let receivedUpdate: unknown;
-    const service = new RoomTypesService({
-      findByIdAndUpdate: (
-        _roomTypeId: string,
-        update: unknown,
-        _options: unknown,
-      ) => {
-        receivedUpdate = update;
+    const emittedEvents: EmittedRealtimeEvent[] = [];
+    const service = new RoomTypesService(
+      {
+        findByIdAndUpdate: (
+          _roomTypeId: string,
+          update: unknown,
+          _options: unknown,
+        ) => {
+          receivedUpdate = update;
 
-        return {
-          exec: async () => createDocument({ isActive: false }),
-        };
-      },
-    } as unknown as Model<RoomTypeDocument>);
+          return {
+            exec: async () => createDocument({ isActive: false }),
+          };
+        },
+      } as unknown as Model<RoomTypeDocument>,
+      createRealtimeGatewayStub(emittedEvents),
+    );
 
     const roomType = await service.deactivateRoomType(
       "507f1f77bcf86cd799439011",
@@ -199,6 +252,16 @@ describe("RoomTypesService", () => {
       },
     });
     assert.equal(roomType.isActive, false);
+    assert.deepEqual(emittedEvents, [
+      {
+        event: REALTIME_EVENT_NAMES.RoomTypesChanged,
+        payload: {
+          action: "deactivated",
+          entity: "room-type",
+          id: "507f1f77bcf86cd799439011",
+        },
+      },
+    ]);
   });
 
   it("reports missing room types as not found", async () => {
@@ -214,4 +277,3 @@ describe("RoomTypesService", () => {
     );
   });
 });
-

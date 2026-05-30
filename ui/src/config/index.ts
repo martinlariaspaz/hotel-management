@@ -1,1 +1,1 @@
-export { API_URL, default as apiUrl } from './api';
+export { API_URL, REALTIME_URL, default as apiUrl } from './api';

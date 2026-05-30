@@ -1,6 +1,7 @@
 import { Module } from "@nestjs/common";
 import { MongooseModule } from "@nestjs/mongoose";
 import { AuthModule } from "../auth/auth.module";
+import { RealtimeModule } from "../realtime/realtime.module";
 import {
   RoomType,
   RoomTypeSchema,
@@ -12,6 +13,7 @@ import { RoomsService } from "./services";
 @Module({
   imports: [
     AuthModule,
+    RealtimeModule,
     MongooseModule.forFeature([
       {
         name: Room.name,
@@ -28,4 +30,3 @@ import { RoomsService } from "./services";
   exports: [RoomsService],
 })
 export class RoomsModule {}
-

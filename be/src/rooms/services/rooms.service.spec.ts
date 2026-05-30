@@ -7,6 +7,10 @@ import {
 } from "@nestjs/common";
 import { Types, type Model } from "mongoose";
 import { RoomStatus, UserRole } from "../../common/enums";
+import {
+  REALTIME_EVENT_NAMES,
+  type RealtimeGateway,
+} from "../../realtime/realtime.gateway";
 import type { RoomTypeDocument } from "../../room-types/schemas/room-type.schema";
 import type { RoomDocument } from "../schemas";
 import { RoomsService } from "./rooms.service";
@@ -18,11 +22,28 @@ type RoomDocumentStub = Pick<
   RoomDocument,
   "_id" | "floor" | "notes" | "roomNumber" | "status"
 > & {
-  roomType: Pick<
-    RoomTypeDocument,
-    "_id" | "capacity" | "isActive" | "name"
-  >;
+  roomType: Pick<RoomTypeDocument, "_id" | "capacity" | "isActive" | "name">;
 };
+
+type EmittedRealtimeEvent = {
+  event: string;
+  payload: {
+    action: string;
+    entity: string;
+    id: string;
+  };
+};
+
+function createRealtimeGatewayStub(
+  events: EmittedRealtimeEvent[],
+): RealtimeGateway {
+  return {
+    emitMutationEvent: (
+      event: string,
+      payload: EmittedRealtimeEvent["payload"],
+    ) => events.push({ event, payload }),
+  } as unknown as RealtimeGateway;
+}
 
 function createRoomDocument(
   overrides: Partial<RoomDocumentStub> = {},
@@ -101,6 +122,7 @@ describe("RoomsService", () => {
 
   it("creates rooms after validating the active room type exists", async () => {
     let createdPayload: Record<string, unknown> | null = null;
+    const emittedEvents: EmittedRealtimeEvent[] = [];
     const service = new RoomsService(
       {
         create: async (payload: Record<string, unknown>) => {
@@ -126,6 +148,7 @@ describe("RoomsService", () => {
           return { _id: ROOM_TYPE_ID };
         },
       } as unknown as Model<RoomTypeDocument>,
+      createRealtimeGatewayStub(emittedEvents),
     );
 
     await service.createRoom({
@@ -140,6 +163,16 @@ describe("RoomsService", () => {
     assert.equal(payload.roomNumber, "101");
     assert.equal(payload.status, RoomStatus.Available);
     assert.ok(payload.roomType instanceof Types.ObjectId);
+    assert.deepEqual(emittedEvents, [
+      {
+        event: REALTIME_EVENT_NAMES.RoomsChanged,
+        payload: {
+          action: "created",
+          entity: "room",
+          id: ROOM_ID,
+        },
+      },
+    ]);
   });
 
   it("rejects rooms that reference a missing room type", async () => {
@@ -162,6 +195,7 @@ describe("RoomsService", () => {
 
   it("updates room number and room type while validating references", async () => {
     let receivedUpdate: unknown;
+    const emittedEvents: EmittedRealtimeEvent[] = [];
     const service = new RoomsService(
       {
         findByIdAndUpdate: (
@@ -179,6 +213,7 @@ describe("RoomsService", () => {
       {
         exists: async () => ({ _id: ROOM_TYPE_ID }),
       } as unknown as Model<RoomTypeDocument>,
+      createRealtimeGatewayStub(emittedEvents),
     );
 
     const room = await service.updateRoom(ROOM_ID, {
@@ -191,6 +226,16 @@ describe("RoomsService", () => {
     assert.equal(update.$set.roomNumber, "102");
     assert.ok(update.$set.roomType instanceof Types.ObjectId);
     assert.equal(room.roomNumber, "102");
+    assert.deepEqual(emittedEvents, [
+      {
+        event: REALTIME_EVENT_NAMES.RoomsChanged,
+        payload: {
+          action: "updated",
+          entity: "room",
+          id: ROOM_ID,
+        },
+      },
+    ]);
   });
 
   it("rejects empty room updates", async () => {
@@ -207,6 +252,7 @@ describe("RoomsService", () => {
 
   it("allows housekeeping to update cleaning-related statuses only", async () => {
     let receivedStatus: unknown;
+    const emittedEvents: EmittedRealtimeEvent[] = [];
     const service = new RoomsService(
       {
         findByIdAndUpdate: (
@@ -222,6 +268,7 @@ describe("RoomsService", () => {
         },
       } as unknown as Model<RoomDocument>,
       {} as Model<RoomTypeDocument>,
+      createRealtimeGatewayStub(emittedEvents),
     );
 
     const room = await service.updateRoomStatus(
@@ -232,6 +279,16 @@ describe("RoomsService", () => {
 
     assert.equal(receivedStatus, RoomStatus.Cleaning);
     assert.equal(room.status, RoomStatus.Cleaning);
+    assert.deepEqual(emittedEvents, [
+      {
+        event: REALTIME_EVENT_NAMES.RoomsChanged,
+        payload: {
+          action: "updated",
+          entity: "room",
+          id: ROOM_ID,
+        },
+      },
+    ]);
 
     await assert.rejects(
       () =>
@@ -252,9 +309,6 @@ describe("RoomsService", () => {
       {} as Model<RoomTypeDocument>,
     );
 
-    await assert.rejects(
-      () => service.getRoom(ROOM_ID),
-      NotFoundException,
-    );
+    await assert.rejects(() => service.getRoom(ROOM_ID), NotFoundException);
   });
 });

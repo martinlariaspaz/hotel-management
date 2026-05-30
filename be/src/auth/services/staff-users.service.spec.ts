@@ -2,6 +2,10 @@ import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 import { BadRequestException, NotFoundException } from "@nestjs/common";
 import type { Model } from "mongoose";
+import {
+  REALTIME_EVENT_NAMES,
+  type RealtimeGateway,
+} from "../../realtime/realtime.gateway";
 import { StaffUsersService } from "./staff-users.service";
 import type { UserDocument } from "../schemas/user.schema";
 import { UserRole } from "../types/user-role.type";
@@ -10,6 +14,26 @@ type StaffUserDocumentStub = Pick<
   UserDocument,
   "_id" | "isActive" | "role" | "username"
 >;
+
+type EmittedRealtimeEvent = {
+  event: string;
+  payload: {
+    action: string;
+    entity: string;
+    id: string;
+  };
+};
+
+function createRealtimeGatewayStub(
+  events: EmittedRealtimeEvent[],
+): RealtimeGateway {
+  return {
+    emitMutationEvent: (
+      event: string,
+      payload: EmittedRealtimeEvent["payload"],
+    ) => events.push({ event, payload }),
+  } as unknown as RealtimeGateway;
+}
 
 function createDocument(
   overrides: Partial<StaffUserDocumentStub> = {},
@@ -54,17 +78,21 @@ describe("StaffUsersService", () => {
 
   it("creates a staff user with scrypt password storage", async () => {
     let createdPayload: Record<string, unknown> | null = null;
-    const service = new StaffUsersService({
-      create: async (payload: Record<string, unknown>) => {
-        createdPayload = payload;
+    const emittedEvents: EmittedRealtimeEvent[] = [];
+    const service = new StaffUsersService(
+      {
+        create: async (payload: Record<string, unknown>) => {
+          createdPayload = payload;
 
-        return createDocument({
-          username: String(payload.username),
-          role: payload.role as UserRole,
-          isActive: Boolean(payload.isActive),
-        });
-      },
-    } as unknown as Model<UserDocument>);
+          return createDocument({
+            username: String(payload.username),
+            role: payload.role as UserRole,
+            isActive: Boolean(payload.isActive),
+          });
+        },
+      } as unknown as Model<UserDocument>,
+      createRealtimeGatewayStub(emittedEvents),
+    );
 
     const user = await service.createStaffUser({
       username: "housekeeping",
@@ -77,6 +105,16 @@ describe("StaffUsersService", () => {
     assert.equal(payload.passwordAlgorithm, "scrypt");
     assert.notEqual(payload.passwordHash, "password-123");
     assert.equal(typeof payload.passwordSalt, "string");
+    assert.deepEqual(emittedEvents, [
+      {
+        event: REALTIME_EVENT_NAMES.StaffUsersChanged,
+        payload: {
+          action: "created",
+          entity: "staff-user",
+          id: "507f1f77bcf86cd799439011",
+        },
+      },
+    ]);
   });
 
   it("rejects duplicate usernames with a validation-safe bad request", async () => {
@@ -99,23 +137,27 @@ describe("StaffUsersService", () => {
 
   it("updates role and active state without hard deleting the user", async () => {
     let receivedUpdate: unknown;
-    const service = new StaffUsersService({
-      findByIdAndUpdate: (
-        _userId: string,
-        update: unknown,
-        _options: unknown,
-      ) => {
-        receivedUpdate = update;
+    const emittedEvents: EmittedRealtimeEvent[] = [];
+    const service = new StaffUsersService(
+      {
+        findByIdAndUpdate: (
+          _userId: string,
+          update: unknown,
+          _options: unknown,
+        ) => {
+          receivedUpdate = update;
 
-        return {
-          exec: async () =>
-            createDocument({
-              role: UserRole.Management,
-              isActive: false,
-            }),
-        };
-      },
-    } as unknown as Model<UserDocument>);
+          return {
+            exec: async () =>
+              createDocument({
+                role: UserRole.Management,
+                isActive: false,
+              }),
+          };
+        },
+      } as unknown as Model<UserDocument>,
+      createRealtimeGatewayStub(emittedEvents),
+    );
 
     const user = await service.updateStaffUser("507f1f77bcf86cd799439011", {
       role: UserRole.Management,
@@ -130,6 +172,16 @@ describe("StaffUsersService", () => {
     });
     assert.equal(user.role, UserRole.Management);
     assert.equal(user.isActive, false);
+    assert.deepEqual(emittedEvents, [
+      {
+        event: REALTIME_EVENT_NAMES.StaffUsersChanged,
+        payload: {
+          action: "updated",
+          entity: "staff-user",
+          id: "507f1f77bcf86cd799439011",
+        },
+      },
+    ]);
   });
 
   it("rejects empty staff updates", async () => {
