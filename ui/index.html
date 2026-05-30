@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hotel Management</title>
+    <script>
+      try {
+        const storedColorScheme = window.localStorage.getItem(
+          'hotel-management.color-scheme',
+        );
+        const preferredColorScheme = window.matchMedia(
+          '(prefers-color-scheme: dark)',
+        ).matches
+          ? 'dark'
+          : 'light';
+        const colorScheme =
+          storedColorScheme && storedColorScheme !== 'auto'
+            ? storedColorScheme
+            : preferredColorScheme;
+
+        document.documentElement.setAttribute(
+          'data-mantine-color-scheme',
+          colorScheme,
+        );
+      } catch {
+        document.documentElement.setAttribute(
+          'data-mantine-color-scheme',
+          'light',
+        );
+      }
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
