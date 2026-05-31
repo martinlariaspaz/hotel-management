@@ -427,6 +427,150 @@ const enTranslations = {
       },
     },
   },
+  publicBookingPage: {
+    header: {
+      ariaLabel: 'Public room booking',
+      eyebrow: 'Guest booking',
+      title: 'Find your stay',
+      description:
+        'Search available room types and send a booking request for hotel review.',
+      staffAccess: 'Staff sign in',
+    },
+    search: {
+      eyebrow: 'Availability',
+      title: 'Search dates',
+      submit: 'Search rooms',
+      fields: {
+        checkIn: {
+          label: 'Check-in',
+          placeholder: 'YYYY-MM-DD',
+          required: 'Check-in date is required',
+          date: 'Enter a valid check-in date',
+        },
+        checkOut: {
+          label: 'Check-out',
+          placeholder: 'YYYY-MM-DD',
+          required: 'Check-out date is required',
+          date: 'Enter a valid check-out date',
+          afterCheckIn: 'Check-out must be after check-in',
+        },
+        guests: {
+          label: 'Guests',
+          placeholder: 'Enter a guest count',
+          required: 'Guest count is required',
+          min: 'Guest count must be at least 1',
+        },
+      },
+    },
+    results: {
+      eyebrow: 'Rooms',
+      title: 'Available room types',
+      summary: 'Stay from {checkIn} to {checkOut} for {guests} guests.',
+      idle: 'Choose dates and guest count to see available room types.',
+      idleDescription: 'Start with a date search to compare rooms and prices.',
+      loading: 'Searching available room types',
+      empty: 'No room types are available for this search.',
+      card: {
+        availableCount: '{count} available',
+        capacity: '{count} guests',
+        deposit: 'First-night deposit: {amount}',
+        nightlyPrice: 'Nightly price',
+        noAmenities: 'No amenities listed',
+        noPhoto: 'Photo coming soon',
+        photoAlt: '{name} room photo',
+        selectAction: 'Request this room',
+        selectedAction: 'Selected',
+        totalPrice: 'Total for {nights} nights',
+      },
+    },
+    request: {
+      eyebrow: 'Request',
+      title: 'Booking request',
+      empty: 'Select an available room type to complete the request.',
+    },
+    form: {
+      title: 'Guest details',
+      description: 'Request {roomType}; the hotel will review availability.',
+      backToResults: 'Back to results',
+      submit: 'Send request',
+      fields: {
+        guestName: {
+          label: 'Full name',
+          placeholder: 'Enter a full name',
+          required: 'Full name is required',
+        },
+        email: {
+          label: 'Email',
+          placeholder: 'Enter an email address',
+          required: 'Email is required',
+          format: 'Enter a valid email address',
+        },
+        phone: {
+          label: 'Phone',
+          placeholder: 'Enter a phone number',
+          required: 'Phone is required',
+        },
+        guests: {
+          label: 'Guests',
+          placeholder: 'Enter a guest count',
+          required: 'Guest count is required',
+          min: 'Guest count must be at least 1',
+          capacity: 'Guest count exceeds this room type capacity',
+        },
+        notes: {
+          label: 'Notes',
+          placeholder: 'Enter any arrival notes or special requests',
+        },
+        policyAccepted: {
+          label:
+            'I accept the deposit and cancellation policy for this booking request.',
+          placeholder: 'Accept the booking policy',
+          required: 'Accept the booking policy to continue',
+        },
+      },
+    },
+    policies: {
+      firstNightDeposit: 'First-night deposit: {amount}',
+      freeCancellation48:
+        'Free cancellation is available until 48 hours before check-in. Late cancellations and no-shows may retain the first-night deposit.',
+    },
+  },
+  publicBookingRequestPage: {
+    header: {
+      ariaLabel: 'Pending booking request',
+      status: 'Pending review',
+      title: 'Request received',
+      description:
+        'Your booking request is pending hotel review. No payment is due in this step.',
+    },
+    nextSteps: {
+      expiresAt: 'The hotel should review it before {expiresAt}.',
+      noExpiration: 'The hotel will review it and contact you by email or phone.',
+    },
+    summary: {
+      title: 'Booking summary',
+      reference: 'Reference',
+      nextStep: 'Next step',
+      roomType: 'Room type',
+      dates: 'Dates',
+      dateRange: '{checkIn} to {checkOut}',
+      guests: 'Guests',
+      guestCount: '{count} guests',
+      guest: 'Guest',
+      total: 'Estimated total',
+      deposit: 'Deposit rule',
+      cancellation: 'Cancellation policy',
+      notAvailable: 'Not available',
+    },
+    missingState: {
+      title: 'Reference saved',
+      description:
+        'Use this reference when contacting the hotel. The detailed summary is available immediately after sending a request.',
+    },
+    actions: {
+      newSearch: 'Search again',
+    },
+  },
 } as const;
 
 type WidenStringLeaves<TValue> = TValue extends string

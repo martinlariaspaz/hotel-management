@@ -1,3 +1,4 @@
+export * from './availability';
 export * from './auth';
 export * from './guests';
 export * from './health';

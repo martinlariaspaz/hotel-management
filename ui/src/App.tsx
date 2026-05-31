@@ -22,6 +22,8 @@ import { isSupportedLocale, useI18n } from './i18n';
 import {
   DashboardPage,
   LoginPage,
+  PublicBookingPage,
+  PublicBookingRequestPage,
   RoomsPage,
   RoomTypesPage,
   StaffSettingsPage,
@@ -183,6 +185,24 @@ function App() {
       <Routes>
         <Route
           element={
+            <>
+              <PublicAppToolbar />
+              <PublicBookingPage />
+            </>
+          }
+          path="/book"
+        />
+        <Route
+          element={
+            <>
+              <PublicAppToolbar />
+              <PublicBookingRequestPage />
+            </>
+          }
+          path="/book/request/:reference"
+        />
+        <Route
+          element={
             isAuthenticated ? (
               <Navigate replace to="/dashboard" />
             ) : (
@@ -220,13 +240,13 @@ function App() {
         />
         <Route
           element={
-            <Navigate replace to={isAuthenticated ? '/dashboard' : '/login'} />
+            <Navigate replace to={isAuthenticated ? '/dashboard' : '/book'} />
           }
           path="/"
         />
         <Route
           element={
-            <Navigate replace to={isAuthenticated ? '/dashboard' : '/login'} />
+            <Navigate replace to={isAuthenticated ? '/dashboard' : '/book'} />
           }
           path="*"
         />

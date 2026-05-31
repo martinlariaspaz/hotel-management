@@ -432,6 +432,160 @@ const esARTranslations = {
       },
     },
   },
+  publicBookingPage: {
+    header: {
+      ariaLabel: "Reserva p\u00fablica de habitaciones",
+      eyebrow: "Reserva para hu\u00e9spedes",
+      title: "Busc\u00e1 tu estad\u00eda",
+      description:
+        "Consult\u00e1 tipos de habitaci\u00f3n disponibles y envi\u00e1 una solicitud para revisi\u00f3n del hotel.",
+      staffAccess: "Ingreso del personal",
+    },
+    search: {
+      eyebrow: "Disponibilidad",
+      title: "Buscar fechas",
+      submit: "Buscar habitaciones",
+      fields: {
+        checkIn: {
+          label: "Check-in",
+          placeholder: "AAAA-MM-DD",
+          required: "La fecha de check-in es obligatoria",
+          date: "Ingres\u00e1 una fecha de check-in v\u00e1lida",
+        },
+        checkOut: {
+          label: "Check-out",
+          placeholder: "AAAA-MM-DD",
+          required: "La fecha de check-out es obligatoria",
+          date: "Ingres\u00e1 una fecha de check-out v\u00e1lida",
+          afterCheckIn:
+            "La fecha de check-out debe ser posterior al check-in",
+        },
+        guests: {
+          label: "Hu\u00e9spedes",
+          placeholder: "Ingrese una cantidad de hu\u00e9spedes",
+          required: "La cantidad de hu\u00e9spedes es obligatoria",
+          min: "La cantidad de hu\u00e9spedes debe ser de al menos 1",
+        },
+      },
+    },
+    results: {
+      eyebrow: "Habitaciones",
+      title: "Tipos de habitaci\u00f3n disponibles",
+      summary:
+        "Estad\u00eda del {checkIn} al {checkOut} para {guests} hu\u00e9spedes.",
+      idle:
+        "Eleg\u00ed fechas y cantidad de hu\u00e9spedes para ver tipos disponibles.",
+      idleDescription:
+        "Empez\u00e1 con una b\u00fasqueda de fechas para comparar habitaciones y precios.",
+      loading: "Buscando tipos de habitaci\u00f3n disponibles",
+      empty: "No hay tipos de habitaci\u00f3n disponibles para esta b\u00fasqueda.",
+      card: {
+        availableCount: "{count} disponibles",
+        capacity: "{count} hu\u00e9spedes",
+        deposit: "Se\u00f1a de la primera noche: {amount}",
+        nightlyPrice: "Precio por noche",
+        noAmenities: "Sin amenities cargados",
+        noPhoto: "Foto pr\u00f3ximamente",
+        photoAlt: "Foto de la habitaci\u00f3n {name}",
+        selectAction: "Solicitar esta habitaci\u00f3n",
+        selectedAction: "Seleccionada",
+        totalPrice: "Total por {nights} noches",
+      },
+    },
+    request: {
+      eyebrow: "Solicitud",
+      title: "Solicitud de reserva",
+      empty:
+        "Seleccion\u00e1 un tipo de habitaci\u00f3n disponible para completar la solicitud.",
+    },
+    form: {
+      title: "Datos del hu\u00e9sped",
+      description:
+        "Solicit\u00e1 {roomType}; el hotel revisar\u00e1 la disponibilidad.",
+      backToResults: "Volver a resultados",
+      submit: "Enviar solicitud",
+      fields: {
+        guestName: {
+          label: "Nombre completo",
+          placeholder: "Ingrese un nombre completo",
+          required: "El nombre completo es obligatorio",
+        },
+        email: {
+          label: "Email",
+          placeholder: "Ingrese un email",
+          required: "El email es obligatorio",
+          format: "Ingres\u00e1 un email v\u00e1lido",
+        },
+        phone: {
+          label: "Tel\u00e9fono",
+          placeholder: "Ingrese un tel\u00e9fono",
+          required: "El tel\u00e9fono es obligatorio",
+        },
+        guests: {
+          label: "Hu\u00e9spedes",
+          placeholder: "Ingrese una cantidad de hu\u00e9spedes",
+          required: "La cantidad de hu\u00e9spedes es obligatoria",
+          min: "La cantidad de hu\u00e9spedes debe ser de al menos 1",
+          capacity:
+            "La cantidad de hu\u00e9spedes supera la capacidad de este tipo de habitaci\u00f3n",
+        },
+        notes: {
+          label: "Notas",
+          placeholder:
+            "Ingrese notas de llegada o pedidos especiales",
+        },
+        policyAccepted: {
+          label:
+            "Acepto la pol\u00edtica de se\u00f1a y cancelaci\u00f3n para esta solicitud de reserva.",
+          placeholder: "Acept\u00e1 la pol\u00edtica de reserva",
+          required:
+            "Acept\u00e1 la pol\u00edtica de reserva para continuar",
+        },
+      },
+    },
+    policies: {
+      firstNightDeposit: "Se\u00f1a de la primera noche: {amount}",
+      freeCancellation48:
+        "La cancelaci\u00f3n sin cargo est\u00e1 disponible hasta 48 horas antes del check-in. Las cancelaciones tard\u00edas y los no show pueden retener la se\u00f1a de la primera noche.",
+    },
+  },
+  publicBookingRequestPage: {
+    header: {
+      ariaLabel: "Solicitud de reserva pendiente",
+      status: "Pendiente de revisi\u00f3n",
+      title: "Solicitud recibida",
+      description:
+        "Tu solicitud de reserva qued\u00f3 pendiente de revisi\u00f3n del hotel. En este paso no se realiza ning\u00fan pago.",
+    },
+    nextSteps: {
+      expiresAt: "El hotel deber\u00eda revisarla antes de {expiresAt}.",
+      noExpiration:
+        "El hotel la revisar\u00e1 y se contactar\u00e1 por email o tel\u00e9fono.",
+    },
+    summary: {
+      title: "Resumen de la reserva",
+      reference: "Referencia",
+      nextStep: "Pr\u00f3ximo paso",
+      roomType: "Tipo de habitaci\u00f3n",
+      dates: "Fechas",
+      dateRange: "{checkIn} al {checkOut}",
+      guests: "Hu\u00e9spedes",
+      guestCount: "{count} hu\u00e9spedes",
+      guest: "Hu\u00e9sped",
+      total: "Total estimado",
+      deposit: "Regla de se\u00f1a",
+      cancellation: "Pol\u00edtica de cancelaci\u00f3n",
+      notAvailable: "No disponible",
+    },
+    missingState: {
+      title: "Referencia guardada",
+      description:
+        "Us\u00e1 esta referencia cuando contactes al hotel. El resumen detallado est\u00e1 disponible inmediatamente despu\u00e9s de enviar una solicitud.",
+    },
+    actions: {
+      newSearch: "Buscar de nuevo",
+    },
+  },
 } as const satisfies TranslationMessages;
 
 export default esARTranslations;

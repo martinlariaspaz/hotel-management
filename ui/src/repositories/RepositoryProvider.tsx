@@ -5,6 +5,11 @@ import {
 } from 'react';
 import { API_URL } from '../config';
 import {
+  createHttpAvailabilityRepository,
+  createMockAvailabilityRepository,
+  type AvailabilityRepository,
+} from '../features/availability/repositories';
+import {
   createHttpAuthRepository,
   createMockAuthRepository,
   type AuthRepository,
@@ -30,15 +35,22 @@ import {
   type RoomRepository,
 } from '../features/rooms/repositories';
 import {
+  createHttpReservationRepository,
+  createMockReservationRepository,
+  type ReservationRepository,
+} from '../features/reservations/repositories';
+import {
   createHttpStaffRepository,
   createMockStaffRepository,
   type StaffRepository,
 } from '../features/staff/repositories';
 
 export type Repositories = {
+  availabilityRepository: AvailabilityRepository;
   authRepository: AuthRepository;
   healthRepository: HealthRepository;
   maintenanceBlockRepository: MaintenanceBlockRepository;
+  reservationRepository: ReservationRepository;
   roomRepository: RoomRepository;
   roomTypeRepository: RoomTypeRepository;
   staffRepository: StaffRepository;
@@ -83,9 +95,11 @@ function createBaseRepositories(
 ): Repositories {
   if (environment === 'mock' || environment === 'test') {
     return {
+      availabilityRepository: createMockAvailabilityRepository(),
       authRepository: createMockAuthRepository(),
       healthRepository: createMockHealthRepository(),
       maintenanceBlockRepository: createMockMaintenanceBlockRepository(),
+      reservationRepository: createMockReservationRepository(),
       roomRepository: createMockRoomRepository(),
       roomTypeRepository: createMockRoomTypeRepository(),
       staffRepository: createMockStaffRepository(),
@@ -93,9 +107,11 @@ function createBaseRepositories(
   }
 
   return {
+    availabilityRepository: createHttpAvailabilityRepository(API_URL),
     authRepository: createHttpAuthRepository(API_URL),
     healthRepository: createHttpHealthRepository(API_URL),
     maintenanceBlockRepository: createHttpMaintenanceBlockRepository(API_URL),
+    reservationRepository: createHttpReservationRepository(API_URL),
     roomRepository: createHttpRoomRepository(API_URL),
     roomTypeRepository: createHttpRoomTypeRepository(API_URL),
     staffRepository: createHttpStaffRepository(API_URL),

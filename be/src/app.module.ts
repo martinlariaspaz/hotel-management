@@ -3,6 +3,7 @@ import { ConfigModule } from "@nestjs/config";
 import configuration from "./config/configuration";
 import { validateEnv } from "./config/env.validation";
 import { AuthModule } from "./auth/auth.module";
+import { AvailabilityModule } from "./availability/availability.module";
 import { DatabaseModule } from "./database/database.module";
 import { HealthModule } from "./health/health.module";
 import { GuestsModule } from "./guests/guests.module";
@@ -21,6 +22,7 @@ import { RoomsModule } from "./rooms/rooms.module";
       validate: validateEnv,
     }),
     AuthModule,
+    AvailabilityModule,
     DatabaseModule,
     GuestsModule,
     HealthModule,

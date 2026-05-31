@@ -118,6 +118,77 @@ button {
   width: 100%;
 }
 
+.public-booking-page,
+.public-booking-request-page {
+  min-height: 100vh;
+  padding: calc(var(--mantine-spacing-xl) * 2.8) 0 var(--mantine-spacing-xl);
+  background: linear-gradient(
+    180deg,
+    light-dark(var(--mantine-color-teal-0), var(--mantine-color-dark-8)),
+    light-dark(var(--mantine-color-body), var(--mantine-color-dark-9)) 22rem
+  );
+}
+
+.public-booking-container,
+.public-booking-request-container {
+  width: 100%;
+}
+
+.public-booking-title,
+.public-booking-request-page h1 {
+  line-height: 1.05;
+}
+
+.public-booking-search-panel,
+.public-booking-state-panel,
+.public-booking-request-panel,
+.public-booking-request-hero,
+.public-booking-request-summary,
+.public-room-type-card {
+  background: light-dark(var(--mantine-color-white), var(--mantine-color-dark-6));
+}
+
+.public-booking-content-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(21rem, 28rem);
+  gap: var(--mantine-spacing-xl);
+  align-items: start;
+}
+
+.public-booking-results-section,
+.public-booking-request-section {
+  min-width: 0;
+}
+
+.public-booking-request-section {
+  position: sticky;
+  top: calc(var(--mantine-spacing-xl) * 2.8);
+}
+
+.public-room-type-card {
+  transition:
+    border-color 160ms ease,
+    box-shadow 160ms ease,
+    transform 160ms ease;
+}
+
+.public-room-type-card[data-selected='true'] {
+  border-color: var(--mantine-primary-color-filled);
+  box-shadow: var(--mantine-shadow-md);
+}
+
+.public-room-type-card-placeholder {
+  display: flex;
+  height: 100%;
+  min-height: 13rem;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: var(--mantine-spacing-sm);
+  border-radius: var(--mantine-radius-sm);
+  background: light-dark(var(--mantine-color-gray-1), var(--mantine-color-dark-7));
+}
+
 .dashboard-header {
   padding-right: 0;
 }
@@ -232,6 +303,14 @@ button {
   .dashboard-content-grid {
     grid-template-columns: 1fr;
   }
+
+  .public-booking-content-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .public-booking-request-section {
+    position: static;
+  }
 }
 
 @media (max-width: 48em) {
@@ -240,6 +319,11 @@ button {
   .rooms-page,
   .room-types-page {
     padding: 0 0 var(--mantine-spacing-lg);
+  }
+
+  .public-booking-page,
+  .public-booking-request-page {
+    padding: calc(var(--mantine-spacing-xl) * 2.6) 0 var(--mantine-spacing-lg);
   }
 
   .dashboard-header,
@@ -292,6 +376,10 @@ button {
 
   .dashboard-actions .mantine-Button-root,
   .dashboard-actions .mantine-Badge-root {
+    width: 100%;
+  }
+
+  .public-booking-header .mantine-Button-root {
     width: 100%;
   }
 }
